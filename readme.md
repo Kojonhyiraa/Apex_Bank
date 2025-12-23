@@ -21,16 +21,9 @@ The following features are mandatory:
 
 ## 3. Technical Specifications
 
-### A. The Pillars of OOP
+* **SavingsAccount:** Enforce a **Minimum Balance of $50**. Any debit that violates this must be blocked.
+* **CurrentAccount:** Implement an **Overdraft Limit** (e.g., balance can go down to -$500).
 
-1. **Abstraction:** Create an abstract class `Account`. It must contain shared properties (`accountNumber`, `balance`, `accountHolderName`) and an abstract method `calculateInterest()`.
-2. **Inheritance:**
-* **SavingsAccount:** Must enforce a **Minimum Balance of $50**. Any debit that violates this must be blocked.
-* **CurrentAccount:** Must implement an **Overdraft Limit** (e.g., balance can go down to -$500).
-
-
-3. **Encapsulation:** All class fields must be **private**. Access must be controlled via getters and setters. Data validation (e.g., preventing negative deposit amounts) must happen inside these methods.
-4. **Polymorphism:** Store all accounts in a single `List` or `Map`. Use dynamic method dispatch to process transactions regardless of the specific account type.
 
 ### B. Composition & Data Structures
 
@@ -44,23 +37,14 @@ The following features are mandatory:
 * `AccountNotFoundException`: Thrown if a user searches for an ID that doesn't exist in memory.
 
 
-* **Interfaces:** Implement an `Authenticatable` interface with a `verifyPin(int pin)` method that all account subclasses must implement.
-* **Streams & Lambdas:** Use the Java Stream API to sort and filter the transaction list to retrieve exactly the **5 most recent records** for the mini-statement.
-* **Static Members:** Use a static counter to manage the auto-incrementing account ID system.
-
----
-
 ## 4. Implementation Guide
 
 | Layer | Responsibility |
 | --- | --- |
-| **Model Layer** | Define the `Transaction` class and the `Account` hierarchy (Savings/Current). |
-| **Service Layer** | Create a `BankService` to hold collections and manage business logic (finding accounts, processing transfers). |
-| **Presentation Layer** | Create the `Main` class with a `while(true)` loop and a `switch` statement for user input. |
+| **Model Layer** |  the `Transaction` class and the `Account` hierarchy (Savings/Current). |
+| **Service Layer** |  a `BankService` to hold collections and manage business logic (finding accounts, processing transfers). |
+| **Presentation Layer** |  the `Main` class with a `while(true)` loop and a `switch` statement for user input. |
 
 ### Stability & Robustness
 
-* **Error Handling:** Ensure the application handles `InputMismatchException` (e.g., if a user enters a string when a number is expected) so the program doesn't terminate unexpectedly.
-* **Validation:** Use setters to ensure logic like `amount > 0` is respected for all financial movements.
-
-Would you like me to generate a boilerplate code structure for the `Account` abstract class and the `BankService` to get you started?
+* **Error Handling:** the application handles `InputMismatchException` (e.g., if a user enters a string when a number is expected) so the program doesn't terminate unexpectedly.
