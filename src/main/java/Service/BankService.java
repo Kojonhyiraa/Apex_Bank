@@ -8,7 +8,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
-public class BankService {
+public class BankService extends authenticatable {
     // Users should be able to create Savings or Current accounts
     private Map<String, Account> accounts = new HashMap<>();
 
@@ -556,4 +556,15 @@ public class BankService {
             System.out.println("✘ ERROR: " + e.getMessage());
         }
     }
+
+    @Override
+    public boolean verifyPin(String pin,String accountNumber) {
+        if (accounts.containsKey(accountNumber)) {
+            Account account = accounts.get(accountNumber);
+
+            // 2. Compare the provided PIN with the account's PIN
+            if (account.getPin().equals(pin)) {
+                System.out.println("✔ Verification successful for account " + accountNumber);
+    }
+
 }
