@@ -379,7 +379,7 @@ public class BankService implements authenticatable {
     }
 
     //Initial deposit for Savings Account
-    public boolean initialDeposit(SavingsAccount savingsAccount) throws Exception {
+    public boolean initialDeposit(SavingsAccount savingsAccount) {
         Scanner input = new Scanner(System.in);
         int attempts = 0;
         int maxAttempts = 3;
