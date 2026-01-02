@@ -293,8 +293,16 @@ public class BankService implements authenticatable {
         System.out.println("  Please provide your official documentation details below:");
         System.out.println();
 
-        System.out.print("  [1] Full Name: ");
-        String name = input.nextLine();
+       // Used While loop so that it goes back to the input not return to main menu
+        // Validate Name
+        String name;
+        while (true) {
+            System.out.print("  [1] Full Name: ");
+            name = input.nextLine();
+            if (isValidName(name)) break;
+
+            System.out.println("  ✘ ERROR: Name must be at least 4 words and must be letters only.");
+        }
 
         System.out.print("  [2] Phone Number: ");
         String phoneNumber = input.nextLine();
