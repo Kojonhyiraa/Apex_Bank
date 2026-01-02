@@ -558,13 +558,21 @@ public class BankService extends authenticatable {
     }
 
     @Override
-    public boolean verifyPin(String pin,String accountNumber) {
-        if (accounts.containsKey(accountNumber)) {
-            Account account = accounts.get(accountNumber);
+    public boolean verifyPin(String accountNumber, String pin) {
+        if (!accounts.containsKey(accountNumber)) {
+            System.out.println("Account not found");
+            return false;
+        }
 
-            // 2. Compare the provided PIN with the account's PIN
-            if (account.getPin().equals(pin)) {
-                System.out.println("✔ Verification successful for account " + accountNumber);
+        Account account = accounts.get(accountNumber);
+
+        if (account.getPin().equals(pin)) {
+            System.out.println("✔ Verification successful for account " + accountNumber);
+            return true;
+        }
+
+        System.out.println("Invalid PIN");
+        return false;
     }
 
 }
