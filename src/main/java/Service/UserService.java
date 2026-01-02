@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
+import static Exception.validateInput.*;
+
 public class UserService {
 
     private final Map<String, User> users = new HashMap<>();
@@ -29,56 +31,65 @@ public class UserService {
         System.out.println("│                       NEW USER REGISTRATION PORTAL                      │");
         System.out.println("└─────────────────────────────────────────────────────────────────────────┘");
 
-        System.out.print("  [STEP 1/3] Create Username: ");
-        String username = input.nextLine();
+        String username;
+        while (true) {
+            System.out.print(" [STEP 1/3] Enter Username: ");
+            username = input.nextLine();
+            if (isValidName(username)) break;
 
-        System.out.print("  [STEP 2/3] Set Password: ");
-        String password = input.nextLine();
-
-        String pin = "";
-        boolean pinSet = false;
-
-        while (!pinSet) {
-            System.out.println("  [STEP 3/3] Security PIN for Login");
-            System.out.print("  > Enter a 4-digit PIN: ");
-            pin = input.nextLine();
-
-            if (pin.length() == 4 && pin.matches("\\d+")) { // Added a check to ensure only numbers
-                System.out.print("  > Confirm 4-digit PIN: ");
-                String confirmed_pin = input.nextLine();
-
-                if (pin.equals(confirmed_pin)) {
-                    System.out.println("\n  Processing...");
-                    // Simple visual loading bar
-                    System.out.println("  [██████████████████████████████] 100%");
-
-                    System.out.println("\n  ✔ SUCCESS: Account created successfully for " + username + "!");
-                    System.out.println("  Press ENTER to go to the Main Menu...");
-                    input.nextLine();
-
-                    pinSet = true;
-                } else {
-                    System.out.println("  ✘ ERROR: PINs do not match. Please restart step 3.");
-                }
-            } else {
-                System.out.println("  ✘ ERROR: Invalid PIN. It must be exactly 4 digits (0-9).");
-            }
+            System.out.println("  ✘ ERROR: Username must be at least 4 words and must be letters only.");
         }
 
-        // Logic for the Model to keep values
-        User newUser = new User(username, password, pin);
-        users.put(username, newUser);
-        users.put(newUser.getPin(), newUser);
+        String password;
+        while (true){
+            System.out.print(" [STEP 2/3] Set Password: ");
+            password = input.nextLine();
+            if(isValidPassword(password))break;
 
-        startmenu(username);
+            System.out.println("Password must be at least 8 characters long and include at least one uppercase letter, " +
+                    "one lowercase letter, one digit, and one special character.");
+        }
+
+        //Validate Pin
+        String pin;
+        while(true){
+            System.out.println("    [STEP 3/3] Security PIN for Login");
+            System.out.print("        > Enter a 4-digit PIN: ");
+            pin = input.nextLine();
+
+            if(isValidPin(pin)){
+            System.out.println("\n  Processing...");
+            // Simple visual loading bar
+            System.out.println("  [██████████████████████████████] 100%");
+
+            System.out.println("\n  ✔ SUCCESS: Account created successfully for " + username + "!");
+            System.out.println("  Press ENTER to go to the Main Menu...");
+            input.nextLine();
+
+            // Logic for the Model to keep values
+            User newUser = new User(username, password, pin);
+            users.put(username, newUser);
+            users.put(newUser.getPin(), newUser);
+
+            startmenu(username);
+            break;
+
+            }
+            else{
+                System.out.println("Invalid pin, try again");
+
+            };
+
+        }
+
+
     }
 
 
-    public void startmenu(String username) throws Exception {
+    public void startmenu(String username){
         Scanner input = new Scanner(System.in);
         BankService bankService = new BankService();
 
-        // The logo is printed once at the start or inside the loop depending on preference
         String logo = """
                  █████╗ ██████╗ ███████╗██╗  ██╗    ██████╗  █████╗ ███╗   ██╗██╗  ██╗
                 ██╔══██╗██╔══██╗██╔════╝╚██╗██╔╝    ██╔══██╗██╔══██╗████╗  ██║██║ ██╔╝
@@ -130,6 +141,5 @@ public class UserService {
             System.out.println("\n\n");
         }
     }
-
 
 }
