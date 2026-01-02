@@ -29,27 +29,6 @@ public class BankService extends authenticatable {
         }
     }
 
-    //Implementation of Pin validation(Need to go back to the authenticable class)
-    public void validation(String accountNumber, String pin) {
-        try {
-            // 1. Check if the account exists
-            if (accounts.containsKey(accountNumber)) {
-                Account account = accounts.get(accountNumber);
-
-                // 2. Compare the provided PIN with the account's PIN
-                if (account.getPin().equals(pin)) {
-                    System.out.println("✔ Verification successful for account " + accountNumber);
-                } else {
-                    System.out.println("✘ ERROR: Invalid PIN for account " + accountNumber);
-                }
-            } else {
-                System.out.println("✘ ERROR: Account number " + accountNumber + " not found.");
-            }
-        } catch (Exception e) {
-            System.out.println("An error occurred: " + e.getMessage());
-        }
-    }
-
     //Check User Balance
     public void checkBalance() {
         Scanner input = new Scanner(System.in);
@@ -61,29 +40,12 @@ public class BankService extends authenticatable {
         System.out.println("Enter your pin");
         String pin = input.nextLine();
 
-
-        //Validation checks from the validation Method
-        try {
-            // 1. Check if the account exists
-            if (accounts.containsKey(accountNumber)) {
-                Account account = accounts.get(accountNumber);
-
-                // 2. Compare the provided PIN with the account's PIN
-                if (account.getPin().equals(pin)) {
-                    System.out.println("✔ Verification successful for account " + accountNumber);
-
-                    System.out.println("Your balance is:" + this.accounts.get(accountNumber).getBalance());
-                } else {
-                    System.out.println("✘ ERROR: Invalid PIN for account " + accountNumber);
-                    checkBalance();
-                }
-            } else {
-                System.out.println("✘ ERROR: Account number " + accountNumber + " not found.");
-                checkBalance();
-            }
-        } catch (Exception e) {
-            System.out.println("An error occurred: " + e.getMessage());
+       if(!verifyPin(accountNumber, pin)){
+           return;
         }
+
+        System.out.println("Your balance is:" + this.accounts.get(accountNumber).getBalance());
+
     }
 
     // Deposit funds
