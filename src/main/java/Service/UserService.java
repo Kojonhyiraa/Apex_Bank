@@ -12,7 +12,7 @@ public class UserService {
     private final Map<String, User> users = new HashMap<>();
 
 
-    public void register() throws Exception {
+    public void register()  {
         Scanner input = new Scanner(System.in);
 
         String logo = """
