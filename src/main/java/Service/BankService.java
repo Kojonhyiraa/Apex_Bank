@@ -364,6 +364,7 @@ public class BankService implements authenticatable {
             case 2:
                 createCurrentAccount();
                 break;
+
             default:
                 System.out.println("Invalid option.");
         }
