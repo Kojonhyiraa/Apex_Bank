@@ -8,26 +8,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 
-public class BankService extends authenticatable {
+public class BankService implements authenticatable {
     // Users should be able to create Savings or Current accounts
     private Map<String, Account> accounts = new HashMap<>();
 
     Scanner input = new Scanner(System.in);
+//    InsufficientFundsException: Thrown during a debit if account rules
+//            (Min-Balance/Overdraft) are violated.
 
-    // Check if an account exists
-    public void findAccount(String accountNumber) throws AccountNotFoundException {
-        try {
-            if (!accounts.containsKey(accountNumber)) {
-                throw new AccountNotFoundException("Account number " + accountNumber + " not found.");
-
-            } else {
-                System.out.println("Account exists. Continue Transaction");
-                accounts.get(accountNumber);
-            }
-        } catch (AccountNotFoundException e) {
-            System.out.println(e.getMessage());
-        }
-    }
 
     //Check User Balance
     public void checkBalance() {
@@ -35,7 +23,6 @@ public class BankService extends authenticatable {
 
         System.out.println("Enter account number: ");
         String accountNumber = input.nextLine();
-
 
         System.out.println("Enter your pin");
         String pin = input.nextLine();
@@ -50,39 +37,52 @@ public class BankService extends authenticatable {
 
     // Deposit funds
     public void deposit() {
-        Scanner input = new Scanner(System.in);
-
-        try {
+        try{
+            Scanner input = new Scanner(System.in);
 
             System.out.println("Enter account number: ");
-            String accountNumb = input.nextLine();
+            String accountNumber = input.nextLine();
+
+            //Check if the account number exists even before the user can enter any amount
+           if (!accounts.containsKey(accountNumber)) {
+            throw new AccountNotFoundException(accountNumber+" Not found in our records");
+           }
 
             System.out.println("Enter amount to deposit:");
             double amount = input.nextDouble();
+            input.nextLine();
+
             if (amount > 0) {
-                accounts.get(accountNumb).setBalance(accounts.get(accountNumb).getBalance() + amount);
+                Account account = accounts.get(accountNumber);
+                account.setBalance(account.getBalance() + amount);
 
-            } else {
-                System.out.println("Invalid amount.Deposit more than 0 cedis");
-            }
-            Account account = accounts.get(accountNumb);
-            double newBalance = this.accounts.get(accountNumb).getBalance();
-            System.out.println("Deposit successful");
-            System.out.println("======================================================================");
-            System.out.println("Your new balance is:" + this.accounts.get(accountNumb).getBalance());//or newBalance
-            System.out.println("======================================================================");
+                double newBalance = account.getBalance();
+                System.out.println("Deposit successful");
+                System.out.println("======================================================================");
+                System.out.println("Your new balance is:" + newBalance);
+                System.out.println("======================================================================");
 
-            Transaction transaction = new Transaction(
+                //Log the transaction
+                Transaction transaction = new Transaction(
                     amount,
                     java.time.LocalDateTime.now(),
                     Transaction.TransactionType.DEPOSIT,
                     newBalance
             );
+
             account.addTransaction(transaction);
-        } catch (Exception e) {
-            System.out.println("✘ ERROR: " + e.getMessage());
+    }
+            else{
+                System.out.println("Invalid amount.Try again");
+            }
+
+            }
+
+        catch (AccountNotFoundException e){
+            System.out.println(e.getMessage());
         }
     }
+
 
     //Withdraw funds per-account specifications
     public void withdrawal() {
