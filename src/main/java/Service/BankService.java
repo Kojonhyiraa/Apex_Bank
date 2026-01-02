@@ -345,7 +345,7 @@ public class BankService implements authenticatable {
     }
 
     //Method that lets users choose which type of account to create
-    public void createAccount() throws Exception {
+    public void createAccount() {
         Scanner input = new Scanner(System.in);
         System.out.println("===========================================================================");
         System.out.println("||              WELCOME to APEX BANK Account Creation Portal:             ||");
