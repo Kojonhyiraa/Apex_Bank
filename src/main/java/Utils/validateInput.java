@@ -1,4 +1,4 @@
-package Exception;
+package Utils;
 
 public class validateInput {
 
