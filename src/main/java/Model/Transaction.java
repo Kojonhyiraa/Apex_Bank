@@ -9,7 +9,6 @@ public class Transaction {
     private TransactionType transactionType;
     private double balanceAfter;
 
-
     // Enum for Transaction Types
     public enum TransactionType {
         DEPOSIT, WITHDRAWAL, TRANSFER_IN, TRANSFER_OUT, INTEREST
@@ -31,5 +30,4 @@ public class Transaction {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         return String.format("%-12s | GHS %,10.2f | %s | Balance: GHS %,10.2f", transactionType, amount, dateTime.format(formatter), balanceAfter);
     }
-
 }
