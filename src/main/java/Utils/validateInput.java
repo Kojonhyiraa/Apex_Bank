@@ -3,7 +3,6 @@ package Utils;
 public class validateInput {
 
     public static boolean isValidGhanaCard(String ghanaCardNumber) {
-        // Ghana Card numbers are typically 10 characters long (excluding dashes)
         return ghanaCardNumber != null && ghanaCardNumber.startsWith("GHA")&& ghanaCardNumber.length() >= 10;
     }
 
