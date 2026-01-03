@@ -7,7 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
-import static Exception.validateInput.*;
+import static Utils.validateInput.*;
 
 public class UserService {
 
