@@ -13,6 +13,7 @@ public class UserService {
 
     private final Map<String, User> users = new HashMap<>();
 
+    //Initial User Registration
     public void register()  {
         Scanner input = new Scanner(System.in);
 
@@ -23,7 +24,7 @@ public class UserService {
                 ██╔══██║██╔═══╝ ██╔══╝   ██╔██╗     ██╔══██╗██╔══██║██║╚██╗██║██╔═██╗ 
                 ██║  ██║██║     ███████╗██╔╝ ██╗    ██████╔╝██║  ██║██║ ╚████║██║  ██╗
                 ╚═╝  ╚═╝╚═╝     ╚══════╝╚═╝  ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝
-                """;
+                """ ;
 
         System.out.println(logo);
         System.out.println("┌─────────────────────────────────────────────────────────────────────────┐");
@@ -84,6 +85,7 @@ public class UserService {
 
     }
 
+    //Start menu Page with the initial switch statement
     public void startmenu(String username){
         Scanner input = new Scanner(System.in);
         BankService bankService = new BankService();
