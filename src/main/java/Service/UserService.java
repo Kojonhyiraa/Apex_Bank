@@ -13,7 +13,6 @@ public class UserService {
 
     private final Map<String, User> users = new HashMap<>();
 
-
     public void register()  {
         Scanner input = new Scanner(System.in);
 
@@ -84,7 +83,6 @@ public class UserService {
 
 
     }
-
 
     public void startmenu(String username){
         Scanner input = new Scanner(System.in);
