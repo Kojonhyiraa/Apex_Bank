@@ -27,48 +27,12 @@ public abstract class Account {
         return transactionHistory;
     }
 
-    public void setTransactionHistory(List<Transaction> transactionHistory) {
-        this.transactionHistory = transactionHistory;
-    }
-
     public String getAccountHolderName() {
         return accountHolderName;
     }
 
-    public void setAccountHolderName(String name) {
-        this.accountHolderName = name;
-    }
-
-    public String getAccountNumber() {
-        return accountNumber;
-    }
-
-    public void setAccountNumber(String accountNumber) {
-        this.accountNumber = accountNumber;
-    }
-
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getGhanaCardNumber() {
-        return ghanaCardNumber;
-    }
-
-    public void setGhanaCardNumber(String ghanaCardNumber) {
-        this.ghanaCardNumber = ghanaCardNumber;
-    }
-
     public String getAccountType() {
         return accountType;
-    }
-
-    public void setAccountType(String accountType) {
-        this.accountType = accountType;
     }
 
     public double getBalance() {
@@ -83,11 +47,6 @@ public abstract class Account {
         return pin;
     }
 
-    public void setPin(String pin) {
-        this.pin = pin;
-    }
-
-    public abstract void calculateInterest();
-
     public abstract void addTransaction(Transaction t);
+
 }
