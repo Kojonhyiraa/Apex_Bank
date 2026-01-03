@@ -9,9 +9,6 @@ public class SavingsAccount extends Account {
         super(accountHolderName, accountNumber, phoneNumber, ghanaCardNumber, accountType, balance, transactionHistory, pin);
     }
 
-    @Override
-    public void calculateInterest() {
-    }
 
     @Override
     public void addTransaction(Transaction t) {
