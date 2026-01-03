@@ -9,6 +9,12 @@ public class Transaction {
     private TransactionType transactionType;
     private double balanceAfter;
 
+
+    // Enum for Transaction Types
+    public enum TransactionType {
+        DEPOSIT, WITHDRAWAL, TRANSFER_IN, TRANSFER_OUT, INTEREST
+    }
+
     public Transaction(double amount, LocalDateTime dateTime, TransactionType transactionType, double balanceAfter) {
         this.amount = amount;
         this.dateTime = dateTime;
@@ -16,20 +22,8 @@ public class Transaction {
         this.balanceAfter = balanceAfter;
     }
 
-    public double getAmount() {
-        return amount;
-    }
-
     public LocalDateTime getDateTime() {
         return dateTime;
-    }
-
-    public TransactionType getTransactionType() {
-        return transactionType;
-    }
-
-    public double getBalanceAfter() {
-        return balanceAfter;
     }
 
     @Override
@@ -38,8 +32,4 @@ public class Transaction {
         return String.format("%-12s | GHS %,10.2f | %s | Balance: GHS %,10.2f", transactionType, amount, dateTime.format(formatter), balanceAfter);
     }
 
-    // Enum for Transaction Types
-    public enum TransactionType {
-        DEPOSIT, WITHDRAWAL, TRANSFER_IN, TRANSFER_OUT, INTEREST, FEE
-    }
 }
