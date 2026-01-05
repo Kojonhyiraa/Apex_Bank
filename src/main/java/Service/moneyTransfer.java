@@ -118,7 +118,6 @@ public class moneyTransfer implements authenticatable{
 
     }
 
-
     public void momoToBank(){
         System.out.println("Feature will be implemented soon");
     }
