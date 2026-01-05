@@ -87,6 +87,7 @@ public class UserService {
 
     //Start menu Page with the initial switch statement
     public void startmenu(String username){
+        moneyTransfer moneyTransfer = new moneyTransfer();
         Scanner input = new Scanner(System.in);
         BankService bankService = new BankService();
 
@@ -108,8 +109,9 @@ public class UserService {
             System.out.println(" [2] Check Balance");
             System.out.println(" [3] Deposit");
             System.out.println(" [4] Withdraw");
-            System.out.println(" [5] Print Mini Statement");
-            System.out.println(" [6] Exit");
+            System.out.println(" [5] Transfer Money");
+            System.out.println(" [6] Print Mini Statement");
+            System.out.println(" [7] Exit");
             System.out.println("---------------------------------------------------------------------------");
             System.out.print("Enter choice: ");
 
@@ -129,9 +131,11 @@ public class UserService {
                     bankService.withdrawal();
                     break;
                 case 5:
+                    moneyTransfer.transferMoneyMenu();
+                case 6:
                     bankService.printStatement();
                     break;
-                case 6:
+                case 7:
                     System.out.println("Thank you for choosing Apex Bank. Goodbye!");
                     return;
                 default:
