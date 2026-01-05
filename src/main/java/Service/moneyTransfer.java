@@ -1,6 +1,7 @@
 package Service;
 
 import Model.Account;
+import Model.Transaction;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -78,11 +79,13 @@ public class moneyTransfer implements authenticatable{
             System.out.println(" ✘ ERROR: Phone number must be exactly 10 digits.");
         }
 
+        // Store the current balance into a variable
         double currentBalance = account.getBalance();
 
         //Take amount from User
-        System.out.println("Your current balance is: GHS " + currentBalance );
-        System.out.println("Enter amount to transfer:");
+        System.out.println(" Your current balance is: GHS " + currentBalance );
+        System.out.println(" ------------------------------------------- ");
+        System.out.println(" Enter amount to transfer: ");
 
         double amount = input.nextDouble();
         input.nextLine(); // Clear buffer
@@ -92,26 +95,36 @@ public class moneyTransfer implements authenticatable{
             return;
         }
 
-
         double balanceAfterTransfer = currentBalance - amount;
-
 
         if (balanceAfterTransfer < 0) {
             System.out.println("✘ ERROR: Insufficient funds.");
             System.out.println("Current balance: GHS " + currentBalance);
+            return;
         }
 
         account.setBalance(balanceAfterTransfer);
 
+        Transaction transaction = new Transaction(
+                amount,
+                java.time.LocalDateTime.now(),
+                Transaction.TransactionType.TRANSFER_OUT,
+                balanceAfterTransfer
+        );
+        account.addTransaction(transaction);
 
-        //Deduct from the balance and credit the number
-
-
+        System.out.println("\n  Processing...");
+        System.out.println("  [██████████████████████████████] 100%");
+        System.out.println("Payment successfully made to"+phoneNumber+"from"+account.getAccountHolderName()+"Your current"+
+                "balance is:"+balanceAfterTransfer);
 
     }
 
 
     public void momoToBank(){
+
+        System.out.println("Feature will be implemented soon");
+
 
     }
 
@@ -120,8 +133,8 @@ public class moneyTransfer implements authenticatable{
     }
 
     public void transferToAnotherBank(){
-
     }
+
 
     @Override
     public boolean verifyPin(String pin, String accountNumber) {
