@@ -1,9 +1,16 @@
 package Service;
 
+import Model.Account;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
-public class moneyTransfer {
+import static Utils.validateInput.isValidPhoneNumber;
 
+public class moneyTransfer implements authenticatable{
+    private final Map<String, Account> accounts = new HashMap<>();
+    Scanner input = new Scanner(System.in);
 
     //Transfer money Section
     public void transferMoneyMenu() {
@@ -48,6 +55,59 @@ public class moneyTransfer {
 
     public void bankToMomo(){
 
+        System.out.println(" Enter account number");
+        String accountNumber = input.nextLine();
+
+        System.out.println(" Enter pin");
+        String pin = input.nextLine();
+
+        if (!verifyPin(accountNumber, pin)) {
+            return;
+        }
+
+        Account account = accounts.get(accountNumber);
+
+        //Validate Phone number
+        String phoneNumber;
+        while (true){
+            System.out.print(" Phone Number: ");
+            phoneNumber = input.nextLine();
+
+            if (isValidPhoneNumber(phoneNumber)) break;
+
+            System.out.println(" ✘ ERROR: Phone number must be exactly 10 digits.");
+        }
+
+        double currentBalance = account.getBalance();
+
+        //Take amount from User
+        System.out.println("Your current balance is: GHS " + currentBalance );
+        System.out.println("Enter amount to transfer:");
+
+        double amount = input.nextDouble();
+        input.nextLine(); // Clear buffer
+
+        if (amount <= 0) {
+            System.out.println("✘ ERROR: Invalid amount. Must be greater than 0.");
+            return;
+        }
+
+
+        double balanceAfterTransfer = currentBalance - amount;
+
+
+        if (balanceAfterTransfer < 0) {
+            System.out.println("✘ ERROR: Insufficient funds.");
+            System.out.println("Current balance: GHS " + currentBalance);
+        }
+
+        account.setBalance(balanceAfterTransfer);
+
+
+        //Deduct from the balance and credit the number
+
+
+
     }
 
 
@@ -61,5 +121,23 @@ public class moneyTransfer {
 
     public void transferToAnotherBank(){
 
+    }
+
+    @Override
+    public boolean verifyPin(String pin, String accountNumber) {
+        if (!accounts.containsKey(accountNumber)) {
+            System.out.println("Account not found");
+            return false;
+        }
+
+        Account account = accounts.get(accountNumber);
+
+        if (account.getPin().equals(pin)) {
+            System.out.println("✔ Verification successful for account " + accountNumber);
+            return true;
+        }
+
+        System.out.println("Invalid PIN");
+        return false;
     }
 }
