@@ -31,4 +31,10 @@ public class Transaction {
         return String.format("%-12s | GHS %,10.2f | %s | Balance: GHS %,10.2f", transactionType, amount, dateTime.format(formatter), balanceAfter);
     }
 
+    public String generateTransactionId(){
+
+
+
+    }
+
 }
