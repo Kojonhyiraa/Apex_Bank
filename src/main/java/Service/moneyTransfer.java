@@ -53,9 +53,7 @@ public class moneyTransfer implements authenticatable{
         }
     }
 
-
     public void bankToMomo(){
-
         System.out.println(" Enter account number");
         String accountNumber = input.nextLine();
 
@@ -122,10 +120,7 @@ public class moneyTransfer implements authenticatable{
 
 
     public void momoToBank(){
-
         System.out.println("Feature will be implemented soon");
-
-
     }
 
     public void internalAccountTransfer(){
