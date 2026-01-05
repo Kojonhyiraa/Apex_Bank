@@ -18,14 +18,27 @@ public class moneyTransfer {
         System.out.println(" [5] Cancel");
         System.out.println("---------------------------------------------------------------------------");
         System.out.println("Enter your choice:");
-        int accountType = input.nextInt();
+        int transferType = input.nextInt();
 
-        switch (accountType) {
+        switch (transferType) {
             case 1:
+                bankToMomo();
                 break;
 
             case 2:
+                momoToBank();
                 break;
+
+            case 3:
+                internalAccountTransfer();
+                break;
+
+            case 4:
+                transferToAnotherBank();
+                break;
+
+            case 5:
+                return;
 
             default:
                 System.out.println("Invalid option.");
@@ -37,7 +50,16 @@ public class moneyTransfer {
 
     }
 
-    public void transferMoney(){
+
+    public void momoToBank(){
+
+    }
+
+    public void internalAccountTransfer(){
+
+    }
+
+    public void transferToAnotherBank(){
 
     }
 }
