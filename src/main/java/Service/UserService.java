@@ -87,9 +87,10 @@ public class UserService {
 
     //Start menu Page with the initial switch statement
     public void startmenu(String username){
-        moneyTransfer moneyTransfer = new moneyTransfer();
-        Scanner input = new Scanner(System.in);
         BankService bankService = new BankService();
+        moneyTransfer moneyTransfer = new moneyTransfer(bankService.getAccounts());
+        Scanner input = new Scanner(System.in);
+
 
         String logo = """
                  █████╗ ██████╗ ███████╗██╗  ██╗    ██████╗  █████╗ ███╗   ██╗██╗  ██╗
