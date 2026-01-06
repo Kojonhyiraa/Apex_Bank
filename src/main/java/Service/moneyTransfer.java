@@ -32,7 +32,7 @@ public class moneyTransfer implements authenticatable{
         System.out.println(" [4] Transfer to another bank account");
         System.out.println(" [5] Cancel");
         System.out.println("---------------------------------------------------------------------------");
-        System.out.println("Enter your choice:");
+        System.out.println(" Enter your choice:");
         int transferType = input.nextInt();
 
         switch (transferType) {
@@ -56,15 +56,15 @@ public class moneyTransfer implements authenticatable{
                 return;
 
             default:
-                System.out.println("Invalid option.");
+                System.out.println(" Invalid option.");
         }
     }
 
     public void bankToMomo(){
-        System.out.println(" Enter account to transfer from");
+        System.out.println(" [Step 1/3] Enter account to transfer from:");
         String accountNumber = input.nextLine();
 
-        System.out.println(" Enter pin");
+        System.out.println(" [Step 2/3] Enter pin");
         String pin = input.nextLine();
 
         if (!verifyPin(accountNumber, pin)) {
@@ -126,7 +126,7 @@ public class moneyTransfer implements authenticatable{
     }
 
     public void momoToBank(){
-        System.out.println("Feature will be implemented soon");
+        System.out.println(" Feature will be implemented soon");
     }
 
     public void internalAccountTransfer(){
