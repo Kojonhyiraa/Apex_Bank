@@ -133,6 +133,7 @@ public class UserService {
                     break;
                 case 5:
                     moneyTransfer.transferMoneyMenu();
+                    break;
                 case 6:
                     bankService.printStatement();
                     break;
