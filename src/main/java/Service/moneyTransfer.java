@@ -72,6 +72,7 @@ public class moneyTransfer implements authenticatable{
             return;
         }
 
+        //Check if the account number exists even before the user can enter any amount
         Account account = accounts.get(accountNumber);
 
         //Validate Phone number
