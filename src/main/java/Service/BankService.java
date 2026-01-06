@@ -11,6 +11,10 @@ public class BankService implements authenticatable {
     // Users should be able to create Savings or Current accounts
     private final Map<String, Account> accounts = new HashMap<>();
 
+    public Map<String, Account> getAccounts() {
+        return accounts;
+    }
+
     Scanner input = new Scanner(System.in);
 
     // Implementing an authenticatable interface
