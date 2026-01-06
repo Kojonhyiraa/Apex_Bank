@@ -10,8 +10,15 @@ import java.util.Scanner;
 import static Utils.validateInput.isValidPhoneNumber;
 
 public class moneyTransfer implements authenticatable{
-    private final Map<String, Account> accounts = new HashMap<>();
-    Scanner input = new Scanner(System.in);
+    private final Map<String, Account> accounts;
+    Scanner input;
+
+    //Adding a constructor so it sync with the BankService Impl
+    public moneyTransfer(Map<String, Account> accounts) {
+        this.accounts = accounts;
+        this.input = new Scanner(System.in);
+    }
+
 
     //Transfer money Section
     public void transferMoneyMenu() {
@@ -54,7 +61,7 @@ public class moneyTransfer implements authenticatable{
     }
 
     public void bankToMomo(){
-        System.out.println(" Enter account number");
+        System.out.println(" Enter account to transfer from");
         String accountNumber = input.nextLine();
 
         System.out.println(" Enter pin");
@@ -123,10 +130,83 @@ public class moneyTransfer implements authenticatable{
     }
 
     public void internalAccountTransfer(){
+       
+        System.out.println(" Enter your account to transfer from");
+        String accountNumber = input.nextLine();
 
+        System.out.println(" Enter the recipient's bank account");
+        String recipientAccountNumber = input.nextLine();
+
+        //Check validity of recipient Account number
+        if (!accounts.containsKey(recipientAccountNumber)) {
+            System.out.println("Account not found");
+            return;
+        }
+        Account recipientAccount = accounts.get(recipientAccountNumber);
+        Account account = accounts.get(accountNumber);
+
+        // Store the current balance into a variable
+        double currentBalance = account.getBalance();
+
+        //Take amount from User
+        System.out.println(" Your current balance is: GHS " + currentBalance );
+        System.out.println(" ------------------------------------------- ");
+        System.out.println(" Enter amount to transfer: ");
+
+        double amount = input.nextDouble();
+        input.nextLine(); // Clear buffer
+
+        if (amount <= 0) {
+            System.out.println("✘ ERROR: Invalid amount. Must be greater than 0.");
+            return;
+        }
+        double balanceAfterTransfer = currentBalance - amount;
+
+        if (balanceAfterTransfer < 0) {
+            System.out.println("✘ ERROR: Insufficient funds.");
+            System.out.println("Current balance: GHS " + currentBalance);
+            return;
+        }
+
+        //Check the recipient's name to see if that's what who the user wants to send to
+        System.out.println("Are you sure you want to send money to"+recipientAccount.getAccountHolderName()+"? (y/n)");
+        String confirmation = input.nextLine();
+
+        if (!confirmation.equalsIgnoreCase("y")) {
+            System.out.println("Check account number and try again");
+            return;
+        }
+
+        //Last input is to enter pin
+        System.out.println(" Enter pin");
+        String pin = input.nextLine();
+
+        if (!verifyPin(accountNumber, pin)) {
+            return;
+        }
+
+        //Set Balances
+        account.setBalance(balanceAfterTransfer);
+        recipientAccount.setBalance(recipientAccount.getBalance() + amount);
+
+        //Log the transaction
+        Transaction transaction = new Transaction(
+                amount,
+                java.time.LocalDateTime.now(),
+                Transaction.TransactionType.TRANSFER_OUT,
+                balanceAfterTransfer
+        );
+        account.addTransaction(transaction);
+
+        //Display to the user
+        System.out.println("\n  Processing...");
+        System.out.println("  [██████████████████████████████] 100%");
+        System.out.println("Payment successful. Your current balance is:"+ balanceAfterTransfer);
+        
     }
 
     public void transferToAnotherBank(){
+        System.out.println("Feature will be implemented soon");
     }
 
 
