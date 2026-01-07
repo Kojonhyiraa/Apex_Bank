@@ -197,7 +197,7 @@ public class moneyTransfer implements authenticatable{
         account.setBalance(balanceAfterTransfer);
         recipientAccount.setBalance(recipientAccount.getBalance() + amount);
 
-        //Log the transaction
+        //Log the transaction for the debit
         Transaction transaction = new Transaction(
                 amount,
                 java.time.LocalDateTime.now(),
@@ -205,6 +205,16 @@ public class moneyTransfer implements authenticatable{
                 balanceAfterTransfer
         );
         account.addTransaction(transaction);
+
+        //Log the transaction for the credit
+        Transaction cr_transaction = new Transaction(
+                amount,
+                java.time.LocalDateTime.now(),
+                Transaction.TransactionType.TRANSFER_IN,
+                recipientAccount.getBalance()
+        );
+        recipientAccount.addTransaction(cr_transaction);
+
 
         //Display to the user
         System.out.println("\n  Processing...");
