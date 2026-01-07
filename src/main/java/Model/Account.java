@@ -3,14 +3,14 @@ package Model;
 import java.util.List;
 
 public abstract class Account {
-    private String accountHolderName;
-    private String accountNumber;
-    private String phoneNumber;
-    private String ghanaCardNumber;
-    private String accountType;
+    private final String accountHolderName;
+    private final String accountNumber;
+    private final String phoneNumber;
+    private final String ghanaCardNumber;
+    private final String accountType;
     private double balance;
-    private String pin;
-    private List<Transaction> transactionHistory;
+    private final String pin;
+    private final List<Transaction> transactionHistory;
 
     public Account(String accountHolderName, String accountNumber, String phoneNumber, String ghanaCardNumber, String accountType, double balance, List<Transaction> transactionHistory, String pin) {
         this.accountHolderName = accountHolderName;
