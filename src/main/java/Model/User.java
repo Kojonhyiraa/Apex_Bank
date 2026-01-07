@@ -1,12 +1,9 @@
 package Model;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class User {
-    private String username;
-    private String password;
-    private String pin;
+    private final String username;
+    private final String password;
+    private final String pin;
 
     public User(String username, String password, String pin) {
         this.username = username;
