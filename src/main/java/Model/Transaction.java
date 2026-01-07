@@ -4,15 +4,10 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class Transaction {
-    private double amount;
-    private LocalDateTime dateTime;
-    private TransactionType transactionType;
-    private double balanceAfter;
-
-    // Enum for Transaction Types
-    public enum TransactionType {
-        DEPOSIT, WITHDRAWAL, TRANSFER_IN, TRANSFER_OUT, INTEREST
-    }
+    private final double amount;
+    private final LocalDateTime dateTime;
+    private final TransactionType transactionType;
+    private final double balanceAfter;
 
     public Transaction(double amount, LocalDateTime dateTime, TransactionType transactionType, double balanceAfter) {
         this.amount = amount;
@@ -31,6 +26,11 @@ public class Transaction {
         return String.format("%-12s | GHS %,10.2f | %s | Balance:GHS %,10.2f", transactionType, amount, dateTime.format(formatter), balanceAfter);
     }
 
-
+    // Enum for Transaction Types
+    public enum TransactionType {
+        DEPOSIT, WITHDRAWAL, TRANSFER_IN, TRANSFER_OUT, INTEREST
     }
+
+
+}
     
