@@ -1,6 +1,9 @@
 package Service;
 
-import Model.*;
+import Model.Account;
+import Model.CurrentAccount;
+import Model.SavingsAccount;
+import Model.Transaction;
 
 import javax.security.auth.login.AccountNotFoundException;
 import java.util.*;
@@ -10,12 +13,29 @@ import static Utils.validateInput.*;
 public class BankService implements authenticatable {
     // Users should be able to create Savings or Current accounts
     private final Map<String, Account> accounts = new HashMap<>();
+    Scanner input = new Scanner(System.in);
+
+    // Generate Current Account Number
+    public static String generateCAccountNumber() {
+        String prefix = "CUR-";
+        int min = 100000;
+        int max = 999999;
+        int randomNum = min + (int) (Math.random() * ((max - min) + 1));
+        return prefix + randomNum;
+    }
+
+    // Generate Savings Account Number
+    public static String generateSAccountNumber() {
+        String prefix = "SAV-";
+        int min = 100000;
+        int max = 999999;
+        int randomNum = min + (int) (Math.random() * ((max - min) + 1));
+        return prefix + randomNum;
+    }
 
     public Map<String, Account> getAccounts() {
         return accounts;
     }
-
-    Scanner input = new Scanner(System.in);
 
     // Implementing an authenticatable interface
     @Override
@@ -62,26 +82,8 @@ public class BankService implements authenticatable {
         }
     }
 
-    // Generate Current Account Number
-    public static String generateCAccountNumber() {
-        String prefix = "CUR-";
-        int min = 100000;
-        int max = 999999;
-        int randomNum = min + (int) (Math.random() * ((max - min) + 1));
-        return prefix + randomNum;
-    }
-
-    // Generate Savings Account Number
-    public static String generateSAccountNumber() {
-        String prefix = "SAV-";
-        int min = 100000;
-        int max = 999999;
-        int randomNum = min + (int) (Math.random() * ((max - min) + 1));
-        return prefix + randomNum;
-    }
-
     // Create Savings Account
-    public void createSavingsAccount()  {
+    public void createSavingsAccount() {
         Scanner input = new Scanner(System.in);
 
         System.out.println("\n\n");
@@ -105,7 +107,7 @@ public class BankService implements authenticatable {
 
         //Validate Phone number
         String phoneNumber;
-        while (true){
+        while (true) {
             System.out.print("  [2] Phone Number: ");
             phoneNumber = input.nextLine();
 
@@ -121,7 +123,7 @@ public class BankService implements authenticatable {
             System.out.print("  [3] Ghana Card ID (formatCard(ghanaCardNumber): ");
             ghanaCardNumber = input.nextLine();
 
-            if(isValidGhanaCard(ghanaCardNumber))break;
+            if (isValidGhanaCard(ghanaCardNumber)) break;
 
             System.out.println(" ✘ ERROR: Invalid Ghana Card Number.");
         }
@@ -129,11 +131,11 @@ public class BankService implements authenticatable {
 
         //Validate Pin
         String pin;
-        while(true){
+        while (true) {
             System.out.print("  [4] Enter 4-digit pincode to be used for all transactions: ");
             pin = input.nextLine();
 
-            if(isValidPin(pin)) break;
+            if (isValidPin(pin)) break;
             System.out.println("Invalid pin, try again");
         }
 
@@ -208,7 +210,7 @@ public class BankService implements authenticatable {
 
         //Validate Phone number
         String phoneNumber;
-        while (true){
+        while (true) {
             System.out.print("  [2] Phone Number: ");
             phoneNumber = input.nextLine();
 
@@ -224,7 +226,7 @@ public class BankService implements authenticatable {
             System.out.print("  [3] Ghana Card ID (formatCard(ghanaCardNumber): ");
             ghanaCardNumber = input.nextLine();
 
-            if(isValidGhanaCard(ghanaCardNumber))break;
+            if (isValidGhanaCard(ghanaCardNumber)) break;
 
             System.out.println(" ✘ ERROR: Invalid Ghana Card Number.");
         }
@@ -232,11 +234,11 @@ public class BankService implements authenticatable {
 
         //Validate Pin
         String pin;
-        while(true){
+        while (true) {
             System.out.print("  [4] Enter 4-digit pincode to be used for all transactions: ");
             pin = input.nextLine();
 
-            if(isValidPin(pin)) break;
+            if (isValidPin(pin)) break;
             System.out.println("Invalid pin, try again");
         }
 
@@ -285,8 +287,8 @@ public class BankService implements authenticatable {
         System.out.println("Enter your pin");
         String pin = input.nextLine();
 
-       if(!verifyPin(accountNumber, pin)){
-           return;
+        if (!verifyPin(accountNumber, pin)) {
+            return;
         }
 
         System.out.println("Your balance is:" + this.accounts.get(accountNumber).getBalance());
@@ -340,12 +342,7 @@ public class BankService implements authenticatable {
                 savingsAccount.setBalance(amount);
 
                 // Create and add transaction for initial deposit
-                Transaction transaction = new Transaction(
-                        amount,
-                        java.time.LocalDateTime.now(),
-                        Transaction.TransactionType.DEPOSIT,
-                        amount
-                );
+                Transaction transaction = new Transaction(amount, java.time.LocalDateTime.now(), Transaction.TransactionType.DEPOSIT, amount);
                 savingsAccount.addTransaction(transaction);
 
                 System.out.println(" ");
@@ -371,16 +368,16 @@ public class BankService implements authenticatable {
 
     // Deposit funds
     public void deposit() {
-        try{
+        try {
             Scanner input = new Scanner(System.in);
 
             System.out.println("Enter account number: ");
             String accountNumber = input.nextLine();
 
             //Check if the account number exists even before the user can enter any amount
-           if (!accounts.containsKey(accountNumber)) {
-            throw new AccountNotFoundException(accountNumber+" Not found in our records");
-           }
+            if (!accounts.containsKey(accountNumber)) {
+                throw new AccountNotFoundException(accountNumber + " Not found in our records");
+            }
 
             System.out.println("Enter amount to deposit:");
             double amount = input.nextDouble();
@@ -397,22 +394,14 @@ public class BankService implements authenticatable {
                 System.out.println("======================================================================");
 
                 //Log the transaction
-                Transaction transaction = new Transaction(
-                    amount,
-                    java.time.LocalDateTime.now(),
-                    Transaction.TransactionType.DEPOSIT,
-                    newBalance
-            );
+                Transaction transaction = new Transaction(amount, java.time.LocalDateTime.now(), Transaction.TransactionType.DEPOSIT, newBalance);
 
-            account.addTransaction(transaction);
-    }
-            else{
+                account.addTransaction(transaction);
+            } else {
                 System.out.println("Invalid amount.Try again");
             }
 
-            }
-
-        catch (AccountNotFoundException e){
+        } catch (AccountNotFoundException e) {
             System.out.println(e.getMessage());
         }
     }
@@ -423,75 +412,69 @@ public class BankService implements authenticatable {
             /*
             * SavingsAccount: Must enforce a Minimum Balance of $50. Any debit that violates this must be blocked.
                CurrentAccount: Must implement an Overdraft Limit (e.g., balance can go down to -$500).*/
-            System.out.println("Enter account number: ");
-            String accountNumb = input.nextLine();
+        System.out.println("Enter account number: ");
+        String accountNumb = input.nextLine();
 
-            System.out.println("Enter your pin");
-            String pin = input.nextLine();
+        System.out.println("Enter your pin");
+        String pin = input.nextLine();
 
-            if (!verifyPin(accountNumb, pin)) {
+        if (!verifyPin(accountNumb, pin)) {
+            return;
+        }
+        Account account = accounts.get(accountNumb);
+
+        System.out.println("Enter amount to withdraw:");
+        double amount = input.nextDouble();
+        input.nextLine(); // Clear buffer
+
+        if (amount <= 0) {
+            System.out.println("✘ ERROR: Invalid amount. Must be greater than 0.");
+            return;
+        }
+
+        double currentBalance = account.getBalance();
+        double balanceAfterWithdrawal = currentBalance - amount;
+
+
+        // Check if it's a savings or current account
+        if (account instanceof SavingsAccount) {
+            // SavingsAccount: Enforce minimum balance of $50
+            if (amount > currentBalance) {
+                System.out.println("✘ ERROR: Insufficient funds.");
+                System.out.println("Current balance: GHS " + currentBalance);
+                System.out.println("Attempted withdrawal: GHS " + amount);
                 return;
             }
-                Account account = accounts.get(accountNumb);
 
-                System.out.println("Enter amount to withdraw:");
-                double amount = input.nextDouble();
-                input.nextLine(); // Clear buffer
-
-                if (amount <= 0) {
-                    System.out.println("✘ ERROR: Invalid amount. Must be greater than 0.");
-                    return;
-                }
-
-                double currentBalance = account.getBalance();
-                double balanceAfterWithdrawal = currentBalance - amount;
-
-
-                // Check if it's a savings or current account
-                if (account instanceof SavingsAccount) {
-                    // SavingsAccount: Enforce minimum balance of $50
-                    if (amount > currentBalance) {
-                        System.out.println("✘ ERROR: Insufficient funds.");
-                        System.out.println("Current balance: GHS " + currentBalance);
-                        System.out.println("Attempted withdrawal: GHS " + amount);
-                        return;
-                    }
-
-                    if (balanceAfterWithdrawal < 50) {
-                        System.out.println("✘ ERROR: Withdrawal denied. Savings account must maintain a minimum balance of GHS 50.00");
-                        System.out.println("Maximum you can withdraw: GHS " + (currentBalance - 50));
-                        return;
-                    }
-                }
-                else if (account instanceof CurrentAccount) {
-                    // CurrentAccount: Allow overdraft up to -$500
-                    if (balanceAfterWithdrawal < -500) {
-                        System.out.println("✘ ERROR: Withdrawal denied. Overdraft limit exceeded.");
-                        System.out.println("Current balance: GHS " + currentBalance);
-                        System.out.println("Balance after withdrawal would be: GHS " + balanceAfterWithdrawal);
-                        System.out.println("Maximum overdraft allowed: GHS -500.00");
-                        System.out.println("Maximum you can withdraw: GHS " + (currentBalance + 500));
-                        return;
-                    }
-                }
-
-                // Proceed with withdrawal and logging
-                account.setBalance(balanceAfterWithdrawal);
-
-                Transaction transaction = new Transaction(
-                        amount,
-                        java.time.LocalDateTime.now(),
-                        Transaction.TransactionType.WITHDRAWAL,
-                        balanceAfterWithdrawal
-                );
-                account.addTransaction(transaction);
-
-                System.out.println("\n  Processing...");
-                System.out.println("  [██████████████████████████████] 100%");
-                System.out.println("✔ Withdrawal successful!");
-                System.out.println("  Amount withdrawn: GHS " + amount);
-                System.out.println("  New balance: GHS " + balanceAfterWithdrawal);
+            if (balanceAfterWithdrawal < 50) {
+                System.out.println("✘ ERROR: Withdrawal denied. Savings account must maintain a minimum balance of GHS 50.00");
+                System.out.println("Maximum you can withdraw: GHS " + (currentBalance - 50));
+                return;
+            }
+        } else if (account instanceof CurrentAccount) {
+            // CurrentAccount: Allow overdraft up to -$500
+            if (balanceAfterWithdrawal < -500) {
+                System.out.println("✘ ERROR: Withdrawal denied. Overdraft limit exceeded.");
+                System.out.println("Current balance: GHS " + currentBalance);
+                System.out.println("Balance after withdrawal would be: GHS " + balanceAfterWithdrawal);
+                System.out.println("Maximum overdraft allowed: GHS -500.00");
+                System.out.println("Maximum you can withdraw: GHS " + (currentBalance + 500));
+                return;
+            }
         }
+
+        // Proceed with withdrawal and logging
+        account.setBalance(balanceAfterWithdrawal);
+
+        Transaction transaction = new Transaction(amount, java.time.LocalDateTime.now(), Transaction.TransactionType.WITHDRAWAL, balanceAfterWithdrawal);
+        account.addTransaction(transaction);
+
+        System.out.println("\n  Processing...");
+        System.out.println("  [██████████████████████████████] 100%");
+        System.out.println("✔ Withdrawal successful!");
+        System.out.println("  Amount withdrawn: GHS " + amount);
+        System.out.println("  New balance: GHS " + balanceAfterWithdrawal);
+    }
 
     // Ghana Card input Format
     public String formatCard(String ghanaCard) {
@@ -506,56 +489,53 @@ public class BankService implements authenticatable {
     public void printStatement() {
         Scanner input = new Scanner(System.in);
 
-            System.out.println("\n╔═══════════════════════════════════════════════════════════╗");
-            System.out.println("║                   MINI-STATEMENT REQUEST                  ║");
-            System.out.println("╚═══════════════════════════════════════════════════════════╝");
+        System.out.println("\n╔═══════════════════════════════════════════════════════════╗");
+        System.out.println("║                   MINI-STATEMENT REQUEST                  ║");
+        System.out.println("╚═══════════════════════════════════════════════════════════╝");
 
-            System.out.print("  Enter account number: ");
-            String accountNumber = input.nextLine();
+        System.out.print("  Enter account number: ");
+        String accountNumber = input.nextLine();
 
-            System.out.print("  Enter your PIN: ");
-            String pin = input.nextLine();
+        System.out.print("  Enter your PIN: ");
+        String pin = input.nextLine();
 
-            if (!verifyPin(accountNumber, pin)) {
-                return;
-            }
-
-            Account account = accounts.get(accountNumber);
-
-            List<Transaction> transactions = account.getTransactionHistory();
-
-            System.out.println("\n╔═══════════════════════════════════════════════════════════╗");
-            System.out.println("║                    MINI-STATEMENT                         ║");
-            System.out.println("╠═══════════════════════════════════════════════════════════╣");
-            System.out.printf("║  Account: %-47s ║\n", accountNumber);
-            System.out.printf("║  Holder:  %-47s ║\n", account.getAccountHolderName());
-            System.out.printf("║  Type:    %-47s ║\n", account.getAccountType());
-            System.out.printf("║  Current Balance: GHS %-35.2f ║\n", account.getBalance());
-            System.out.println("╠═══════════════════════════════════════════════════════════╣");
-
-            if (transactions == null || transactions.isEmpty()) {
-                System.out.println("║  No transactions found.                                   ║");
-            } else {
-
-                // Use Streams & Lambdas to get the 5 most recent transactions
-                List<Transaction> lastFiveTransactions = transactions.stream()
-                        .sorted((t1, t2) -> t2.getDateTime().compareTo(t1.getDateTime())) // Sort by date descending (most recent first)
-                        .limit(5) // Get only the first 5
-                        .toList(); // Collect to list
-
-                System.out.println("║  LAST 5 TRANSACTIONS:                                     ║");
-                System.out.println("╠═══════════════════════════════════════════════════════════╣");
-
-                // Display transactions using forEach with lambda
-                lastFiveTransactions.forEach(transaction ->
-                        System.out.printf("║  %-57s ║\n", transaction.toString())
-                );
-            }
-
-            System.out.println("╚════════════════════════════════════════════════════════════════╝");
-            System.out.println("  Press ENTER to return to the menu...");
-            input.nextLine();
+        if (!verifyPin(accountNumber, pin)) {
+            return;
         }
+
+        Account account = accounts.get(accountNumber);
+
+        List<Transaction> transactions = account.getTransactionHistory();
+
+        System.out.println("\n╔═══════════════════════════════════════════════════════════╗");
+        System.out.println("║                    MINI-STATEMENT                         ║");
+        System.out.println("╠═══════════════════════════════════════════════════════════╣");
+        System.out.printf("║  Account: %-47s ║\n", accountNumber);
+        System.out.printf("║  Holder:  %-47s ║\n", account.getAccountHolderName());
+        System.out.printf("║  Type:    %-47s ║\n", account.getAccountType());
+        System.out.printf("║  Current Balance: GHS %-35.2f ║\n", account.getBalance());
+        System.out.println("╠═══════════════════════════════════════════════════════════╣");
+
+        if (transactions == null || transactions.isEmpty()) {
+            System.out.println("║  No transactions found.                                   ║");
+        } else {
+
+            // Use Streams & Lambdas to get the 5 most recent transactions
+            List<Transaction> lastFiveTransactions = transactions.stream().sorted((t1, t2) -> t2.getDateTime().compareTo(t1.getDateTime())) // Sort by date descending (most recent first)
+                    .limit(5) // Get only the first 5
+                    .toList(); // Collect to list
+
+            System.out.println("║  LAST 5 TRANSACTIONS:                                     ║");
+            System.out.println("╠═══════════════════════════════════════════════════════════╣");
+
+            // Display transactions using forEach with lambda
+            lastFiveTransactions.forEach(transaction -> System.out.printf("║  %-57s ║\n", transaction.toString()));
+        }
+
+        System.out.println("╚════════════════════════════════════════════════════════════════╝");
+        System.out.println("  Press ENTER to return to the menu...");
+        input.nextLine();
+    }
 
 
 }
