@@ -3,13 +3,12 @@ package Service;
 import Model.Account;
 import Model.Transaction;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
 
 import static Utils.validateInput.isValidPhoneNumber;
 
-public class moneyTransfer implements authenticatable{
+public class moneyTransfer implements authenticatable {
     private final Map<String, Account> accounts;
     Scanner input;
 
@@ -18,7 +17,6 @@ public class moneyTransfer implements authenticatable{
         this.accounts = accounts;
         this.input = new Scanner(System.in);
     }
-
 
     //Transfer money Section
     public void transferMoneyMenu() {
@@ -61,8 +59,7 @@ public class moneyTransfer implements authenticatable{
         }
     }
 
-
-    public void bankToMomo(){
+    public void bankToMomo() {
         System.out.println(" [Step 1/3] Enter account to transfer from:");
         String accountNumber = input.nextLine();
 
@@ -78,7 +75,7 @@ public class moneyTransfer implements authenticatable{
 
         //Validate Phone number
         String phoneNumber;
-        while (true){
+        while (true) {
             System.out.print(" Phone Number: ");
             phoneNumber = input.nextLine();
 
@@ -91,7 +88,7 @@ public class moneyTransfer implements authenticatable{
         double currentBalance = account.getBalance();
 
         //Take amount from User
-        System.out.println(" Your current balance is: GHS " + currentBalance );
+        System.out.println(" Your current balance is: GHS " + currentBalance);
         System.out.println(" ------------------------------------------- ");
         System.out.println(" Enter amount to transfer: ");
 
@@ -113,27 +110,21 @@ public class moneyTransfer implements authenticatable{
 
         account.setBalance(balanceAfterTransfer);
 
-        Transaction transaction = new Transaction(
-                amount,
-                java.time.LocalDateTime.now(),
-                Transaction.TransactionType.TRANSFER_OUT,
-                balanceAfterTransfer
-        );
+        Transaction transaction = new Transaction(amount, java.time.LocalDateTime.now(), Transaction.TransactionType.TRANSFER_OUT, balanceAfterTransfer);
         account.addTransaction(transaction);
 
         System.out.println("\n  Processing...");
         System.out.println("  [██████████████████████████████] 100%");
-        System.out.println("Payment successfully made to "+phoneNumber+" from "+account.getAccountHolderName()+" Your current "+
-                "balance is: "+balanceAfterTransfer);
+        System.out.println("Payment successfully made to " + phoneNumber + " from " + account.getAccountHolderName() + " Your current " + "balance is: " + balanceAfterTransfer);
 
     }
 
-    public void momoToBank(){
+    public void momoToBank() {
         System.out.println(" Feature will be implemented soon");
     }
 
-    public void internalAccountTransfer(){
-       
+    public void internalAccountTransfer() {
+
         System.out.println(" Enter your account to transfer from");
         String accountNumber = input.nextLine();
 
@@ -146,7 +137,7 @@ public class moneyTransfer implements authenticatable{
             return;
         }
 
-        if(accountNumber.equals(recipientAccountNumber)){
+        if (accountNumber.equals(recipientAccountNumber)) {
             System.out.println("You cannot transfer money to and from the same account");
             return;
         }
@@ -157,7 +148,7 @@ public class moneyTransfer implements authenticatable{
         double currentBalance = account.getBalance();
 
         //Take amount from User
-        System.out.println(" Your current balance is: GHS " + currentBalance );
+        System.out.println(" Your current balance is: GHS " + currentBalance);
         System.out.println(" ------------------------------------------- ");
         System.out.println(" Enter amount to transfer: ");
 
@@ -177,7 +168,7 @@ public class moneyTransfer implements authenticatable{
         }
 
         //Check the recipient's name to see if that's what who the user wants to send to
-        System.out.println("Are you sure you want to send money to "+recipientAccount.getAccountHolderName()+"? (y/n)");
+        System.out.println("Are you sure you want to send money to " + recipientAccount.getAccountHolderName() + "? (y/n)");
         String confirmation = input.nextLine();
 
         if (!confirmation.equalsIgnoreCase("y")) {
@@ -198,32 +189,22 @@ public class moneyTransfer implements authenticatable{
         recipientAccount.setBalance(recipientAccount.getBalance() + amount);
 
         //Log the transaction for the debit
-        Transaction transaction = new Transaction(
-                amount,
-                java.time.LocalDateTime.now(),
-                Transaction.TransactionType.TRANSFER_OUT,
-                balanceAfterTransfer
-        );
+        Transaction transaction = new Transaction(amount, java.time.LocalDateTime.now(), Transaction.TransactionType.TRANSFER_OUT, balanceAfterTransfer);
         account.addTransaction(transaction);
 
         //Log the transaction for the credit
-        Transaction cr_transaction = new Transaction(
-                amount,
-                java.time.LocalDateTime.now(),
-                Transaction.TransactionType.TRANSFER_IN,
-                recipientAccount.getBalance()
-        );
+        Transaction cr_transaction = new Transaction(amount, java.time.LocalDateTime.now(), Transaction.TransactionType.TRANSFER_IN, recipientAccount.getBalance());
         recipientAccount.addTransaction(cr_transaction);
 
 
         //Display to the user
         System.out.println("\n  Processing...");
         System.out.println("  [██████████████████████████████] 100%");
-        System.out.println("Payment successful. Your current balance is: "+ balanceAfterTransfer);
-        
+        System.out.println("Payment successful. Your current balance is: " + balanceAfterTransfer);
+
     }
 
-    public void transferToAnotherBank(){
+    public void transferToAnotherBank() {
         System.out.println("Feature will be implemented soon");
     }
 
