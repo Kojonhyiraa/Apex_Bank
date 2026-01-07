@@ -34,6 +34,7 @@ public class moneyTransfer implements authenticatable{
         System.out.println("---------------------------------------------------------------------------");
         System.out.println(" Enter your choice:");
         int transferType = input.nextInt();
+        input.nextLine();
 
         switch (transferType) {
             case 1:
@@ -122,8 +123,8 @@ public class moneyTransfer implements authenticatable{
 
         System.out.println("\n  Processing...");
         System.out.println("  [██████████████████████████████] 100%");
-        System.out.println("Payment successfully made to"+phoneNumber+"from"+account.getAccountHolderName()+"Your current"+
-                "balance is:"+balanceAfterTransfer);
+        System.out.println("Payment successfully made to "+phoneNumber+" from "+account.getAccountHolderName()+" Your current "+
+                "balance is: "+balanceAfterTransfer);
 
     }
 
@@ -142,6 +143,11 @@ public class moneyTransfer implements authenticatable{
         //Check validity of recipient Account number
         if (!accounts.containsKey(recipientAccountNumber)) {
             System.out.println("Account not found");
+            return;
+        }
+
+        if(accountNumber.equals(recipientAccountNumber)){
+            System.out.println("You cannot transfer money to and from the same account");
             return;
         }
         Account recipientAccount = accounts.get(recipientAccountNumber);
@@ -171,7 +177,7 @@ public class moneyTransfer implements authenticatable{
         }
 
         //Check the recipient's name to see if that's what who the user wants to send to
-        System.out.println("Are you sure you want to send money to"+recipientAccount.getAccountHolderName()+"? (y/n)");
+        System.out.println("Are you sure you want to send money to "+recipientAccount.getAccountHolderName()+"? (y/n)");
         String confirmation = input.nextLine();
 
         if (!confirmation.equalsIgnoreCase("y")) {
@@ -203,7 +209,7 @@ public class moneyTransfer implements authenticatable{
         //Display to the user
         System.out.println("\n  Processing...");
         System.out.println("  [██████████████████████████████] 100%");
-        System.out.println("Payment successful. Your current balance is:"+ balanceAfterTransfer);
+        System.out.println("Payment successful. Your current balance is: "+ balanceAfterTransfer);
         
     }
 
@@ -213,7 +219,7 @@ public class moneyTransfer implements authenticatable{
 
 
     @Override
-    public boolean verifyPin(String pin, String accountNumber) {
+    public boolean verifyPin(String accountNumber, String pin) {
         if (!accounts.containsKey(accountNumber)) {
             System.out.println("Account not found");
             return false;
