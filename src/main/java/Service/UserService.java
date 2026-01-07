@@ -2,7 +2,6 @@ package Service;
 
 import Model.User;
 
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
@@ -14,7 +13,7 @@ public class UserService {
     private final Map<String, User> users = new HashMap<>();
 
     //Initial User Registration
-    public void register()  {
+    public void register() {
         Scanner input = new Scanner(System.in);
 
         String logo = """
@@ -24,7 +23,7 @@ public class UserService {
                 ██╔══██║██╔═══╝ ██╔══╝   ██╔██╗     ██╔══██╗██╔══██║██║╚██╗██║██╔═██╗ 
                 ██║  ██║██║     ███████╗██╔╝ ██╗    ██████╔╝██║  ██║██║ ╚████║██║  ██╗
                 ╚═╝  ╚═╝╚═╝     ╚══════╝╚═╝  ╚═╝    ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═══╝╚═╝  ╚═╝
-                """ ;
+                """;
 
         System.out.println(logo);
         System.out.println("┌─────────────────────────────────────────────────────────────────────────┐");
@@ -41,44 +40,42 @@ public class UserService {
         }
 
         String password;
-        while (true){
+        while (true) {
             System.out.print(" [STEP 2/3] Set Password: ");
             password = input.nextLine();
-            if(isValidPassword(password))break;
+            if (isValidPassword(password)) break;
 
-            System.out.println("Password must be at least 8 characters long and include at least one uppercase letter, " +
-                    "one lowercase letter, one digit, and one special character.");
+            System.out.println("Password must be at least 8 characters long and include at least one uppercase letter, " + "one lowercase letter, one digit, and one special character.");
         }
 
         //Validate Pin
         String pin;
-        while(true){
+        while (true) {
             System.out.println("    [STEP 3/3] Security PIN for Login");
             System.out.print("        > Enter a 4-digit PIN: ");
             pin = input.nextLine();
 
-            if(isValidPin(pin)){
-            System.out.println("\n  Processing...");
-            // Simple visual loading bar
-            System.out.println("  [██████████████████████████████] 100%");
+            if (isValidPin(pin)) {
+                System.out.println("\n  Processing...");
+                // Simple visual loading bar
+                System.out.println("  [██████████████████████████████] 100%");
 
-            System.out.println("\n  ✔ SUCCESS: Account created successfully for " + username + "!");
-            System.out.println("  Press ENTER to go to the Main Menu...");
-            input.nextLine();
+                System.out.println("\n  ✔ SUCCESS: Account created successfully for " + username + "!");
+                System.out.println("  Press ENTER to go to the Main Menu...");
+                input.nextLine();
 
-            // Logic for the Model to keep values
-            User newUser = new User(username, password, pin);
-            users.put(username, newUser);
-            users.put(newUser.getPin(), newUser);
+                // Logic for the Model to keep values
+                User newUser = new User(username, password, pin);
+                users.put(username, newUser);
+                users.put(newUser.getPin(), newUser);
 
-            startmenu(username);
-            break;
+                startmenu(username);
+                break;
 
-            }
-            else{
+            } else {
                 System.out.println("Invalid pin, try again");
 
-            };
+            }
 
         }
 
@@ -86,7 +83,7 @@ public class UserService {
     }
 
     //Start menu Page with the initial switch statement
-    public void startmenu(String username){
+    public void startmenu(String username) {
         BankService bankService = new BankService();
         moneyTransfer moneyTransfer = new moneyTransfer(bankService.getAccounts());
         Scanner input = new Scanner(System.in);
