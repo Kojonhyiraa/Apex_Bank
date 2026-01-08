@@ -6,7 +6,6 @@ public class validateInput {
         return ghanaCardNumber != null && ghanaCardNumber.startsWith("GHA")&& ghanaCardNumber.length() >= 10;
     }
 
-
     public static boolean isValidPhoneNumber(String phoneNumber) {
         // Basic validation for a typical 10-digit phone number
         return phoneNumber != null && phoneNumber.matches("\\d{10}");
