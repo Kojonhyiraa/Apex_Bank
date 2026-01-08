@@ -12,6 +12,7 @@ public class moneyTransfer implements authenticatable {
     private final Map<String, Account> accounts;
     Scanner input;
 
+
     //Adding a constructor so it sync with the BankService Impl
     public moneyTransfer(Map<String, Account> accounts) {
         this.accounts = accounts;
