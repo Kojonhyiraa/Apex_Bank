@@ -11,7 +11,6 @@ public class validateInput {
         return phoneNumber != null && phoneNumber.matches("\\d{10}");
     }
 
-
     public static boolean isValidPin(String pin) {
         // PIN must be exactly 4 digits
         return pin != null && pin.matches("\\d{4}");
