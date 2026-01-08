@@ -26,6 +26,7 @@ public class validateInput {
                 && name.length()>=4;
     }
 
+
     public static boolean isValidPassword(String password){
         return password != null
                 && password.length() >= 8
