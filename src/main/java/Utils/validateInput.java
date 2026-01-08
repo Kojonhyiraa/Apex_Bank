@@ -17,7 +17,6 @@ public class validateInput {
         return pin != null && pin.matches("\\d{4}");
     }
 
-
     public static boolean isValidName(String name) {
         // Name should not be null or empty and can contain letters, spaces, and some punctuation
         return name != null
