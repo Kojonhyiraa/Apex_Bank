@@ -82,6 +82,17 @@ public class UserService {
 
     }
 
+    public void login(){
+        Scanner input = new Scanner(System.in);
+        System.out.println("Enter your username");
+        String username = input.nextLine();
+
+        System.out.println("Enter your pin");
+        String pin = input.nextLine();
+
+        startmenu(username);
+    }
+
     //Start menu Page with the initial switch statement
     public void startmenu(String username) {
         BankService bankService = new BankService();
