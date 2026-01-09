@@ -10,7 +10,9 @@ import static Utils.validateInput.*;
 
 public class UserService {
 
-    private final Map<String, User> users = new HashMap<>();
+    private final Map<String, User> userbyUsername = new HashMap<>();
+
+    private final Map<String, User> userbyPin = new HashMap<>();
 
     //Initial User Registration
     public void register() {
@@ -66,8 +68,8 @@ public class UserService {
 
                 // Logic for the Model to keep values
                 User newUser = new User(username, password, pin);
-                users.put(username, newUser);
-                users.put(newUser.getPin(), newUser);
+                userbyUsername.put(username, newUser);
+                userbyPin.put(pin, newUser);
 
                 startmenu(username);
                 break;
@@ -90,11 +92,15 @@ public class UserService {
         System.out.println("Enter your pin");
         String pin = input.nextLine();
 
-        if(!users.containsKey(username)){
+        if(!userbyUsername.containsKey(username)){
             System.out.println("User not found");
             return;
         }
-        if(pin.equals(users.get(username).getPin())){
+
+        //get the username
+        User verifiedUser = userbyUsername.get(username);
+
+        if(verifiedUser.getPin().equals(pin)){
             System.out.println("Authentication successful");
             startmenu(username);
         }
