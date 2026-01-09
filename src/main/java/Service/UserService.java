@@ -68,7 +68,8 @@ public class UserService {
                 User newUser = new User(username, password, pin);
                 users.put(username, newUser);
 
-                startmenu(username);
+                //startmenu(username);
+                entryPoint();
                 break;
             }
             else {
