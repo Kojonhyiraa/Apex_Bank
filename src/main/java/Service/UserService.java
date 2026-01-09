@@ -90,7 +90,15 @@ public class UserService {
         System.out.println("Enter your pin");
         String pin = input.nextLine();
 
-        startmenu(username);
+        if(!users.containsKey(username)){
+            System.out.println("User not found");
+            return;
+        }
+        if(pin.equals(users.get(username).getPin())){
+            System.out.println("Authentication successful");
+            startmenu(username);
+        }
+
     }
 
     //Start menu Page with the initial switch statement
