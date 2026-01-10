@@ -77,7 +77,7 @@ public class BankService implements authenticatable {
 
         switch (accountType) {
             case 1:
-                createSavingsAccount();
+                createSavingsAccount(username);
                 break;
 
             case 2:
@@ -90,7 +90,7 @@ public class BankService implements authenticatable {
     }
 
     // Create Savings Account
-    public void createSavingsAccount() {
+    public void createSavingsAccount(String username) {
         Scanner input = new Scanner(System.in);
 
         System.out.println("\n\n");
@@ -158,12 +158,12 @@ public class BankService implements authenticatable {
         System.out.println("  ┌──────────────────────────────────────────────────────────┐");
         System.out.println("  │                OFFICIAL ACCOUNT SUMMARY                  │");
         System.out.println("  ├──────────────────────────────────────────────────────────┤");
-        System.out.printf("  │  HOLDER NAME    : %-38s │\n", name.toUpperCase());
-        System.out.printf("  │  ACCOUNT NUMBER : %-38s │\n", accountNumber);
-        System.out.printf("  │  PHONE NUMBER   : %-38s │\n", phoneNumber);
-        System.out.printf("  │  GHANA CARD ID  : %-38s │\n", formatCard(ghanaCardNumber));
-        System.out.printf("  │  ACCOUNT TYPE   : %-38s │\n", "SAVINGS");
-        System.out.printf("  │  INITIAL BAL    : GHS %-34.2f │\n", balance);
+        System.out.printf("   │  HOLDER NAME    : %-38s │\n", name.toUpperCase());
+        System.out.printf("   │  ACCOUNT NUMBER : %-38s │\n", accountNumber);
+        System.out.printf("   │  PHONE NUMBER   : %-38s │\n", phoneNumber);
+        System.out.printf("   │  GHANA CARD ID  : %-38s │\n", formatCard(ghanaCardNumber));
+        System.out.printf("   │  ACCOUNT TYPE   : %-38s │\n", "SAVINGS");
+        System.out.printf("   │  INITIAL BAL    : GHS %-34.2f │\n", balance);
         System.out.println("  ├───── ACCOUNT WILL ONLY BE SAVED AFTER INITIAL DEPOSIT────┤");
         System.out.println("  └──────────────────────────────────────────────────────────┘");
 
@@ -178,11 +178,9 @@ public class BankService implements authenticatable {
 
         if (depositSuccessful) {
             // Only store account after successful initial deposit
-            accounts.put(name, savingsAccount);
+            listOfAccounts.computeIfAbsent(username, k -> new ArrayList<>()).add(savingsAccount);
             accounts.put(accountNumber, savingsAccount);
-            accounts.put(phoneNumber, savingsAccount);
-            accounts.put(ghanaCardNumber, savingsAccount);
-            accounts.put(pin, savingsAccount);
+
 
             System.out.println("\n✔ Savings account successfully created and activated!");
             System.out.println("  Account Number: " + accountNumber);
@@ -286,38 +284,44 @@ public class BankService implements authenticatable {
 
         Scanner input = new Scanner(System.in);
 
-//        System.out.println("Enter account number: ");
-//        String accountNumber = input.nextLine();
         if (!listOfAccounts.containsKey(username)) {
             System.out.println("✘ ERROR: No bank account found for user: " + username);
             System.out.println("Please create an account first (Option 1).");
             return;
         }
 
+        List<Account> userAccounts = listOfAccounts.get(username);
+
+        System.out.println("\n--- Your Accounts ---");
+        for (int i = 0; i < userAccounts.size(); i++) {
+            Account acc = userAccounts.get(i);
+            System.out.printf("[%d] %s (%s)\n", i + 1, acc.getAccountType(), acc.getAccountNumber());
+        }
+
+        System.out.print("Select account index to check balance: ");
+        int index = input.nextInt() - 1;
+        input.nextLine();
+
+        if (index < 0 || index >= userAccounts.size()) {
+            System.out.println("Invalid selection.");
+            return;
+        }
+        Account account = userAccounts.get(index);
+
+
+        //Pin Section
         System.out.println("Enter your pin");
         String pin = input.nextLine();
 
-        List<Account> userAccounts = listOfAccounts.get(username);
-
-        // Assuming we check the balance of the first account or you can implement logic to select one
-        Account account = userAccounts.get(0);
-
         if(account.getPin().equals(pin)){
             System.out.println("=================================================");
-            System.out.printf(" Account Holder: %s\n", account.getAccountHolderName());
             System.out.printf(" Current Balance: GHS %.2f\n", account.getBalance());
             System.out.println("============================");
         }
+
         else {
             System.out.println("✘ Invalid PIN. Access denied.");
         }
-
-//        if (!verifyPin(accountNumber, pin)) {
-//            return;
-//        }
-
-        //System.out.println("Your balance is:" + this.accounts.get(accountNumber).getBalance());
-
     }
 
     // Initial deposit for Saving Account
@@ -391,7 +395,7 @@ public class BankService implements authenticatable {
         return false;
     }
 
-    // Deposit funds
+    // Deposit fundsT
     public void deposit() {
         try {
             Scanner input = new Scanner(System.in);

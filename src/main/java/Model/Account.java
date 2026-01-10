@@ -49,4 +49,8 @@ public abstract class Account {
 
     public abstract void addTransaction(Transaction t);
 
+    public String getAccountNumber() {
+        return accountNumber;
+    }
+
 }
