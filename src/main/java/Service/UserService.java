@@ -186,7 +186,7 @@ public class UserService {
                     bankService.createAccount();
                     break;
                 case 2:
-                    bankService.checkBalance();
+                    bankService.checkBalance(username);
                     break;
                 case 3:
                     bankService.deposit();
@@ -214,3 +214,4 @@ public class UserService {
     }
 
 }
+
