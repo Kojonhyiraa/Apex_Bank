@@ -278,20 +278,37 @@ public class BankService implements authenticatable {
     }
 
     // Check User Balance
-    public void checkBalance() {
+    public void checkBalance(String username) {
         Scanner input = new Scanner(System.in);
 
-        System.out.println("Enter account number: ");
-        String accountNumber = input.nextLine();
+//        System.out.println("Enter account number: ");
+//        String accountNumber = input.nextLine();
+        if (!accounts.containsKey(username)) {
+            System.out.println("✘ ERROR: No bank account found for user: " + username);
+            System.out.println("Please create an account first (Option 1).");
+            return;
+        }
 
         System.out.println("Enter your pin");
         String pin = input.nextLine();
 
-        if (!verifyPin(accountNumber, pin)) {
-            return;
+        Account account = accounts.get(username);
+
+        if(account.getPin().equals(pin)){
+            System.out.println("=================================================");
+            System.out.printf(" Account Holder: %s\n", account.getAccountHolderName());
+            System.out.printf(" Current Balance: GHS %.2f\n", account.getBalance());
+            System.out.println("============================");
+        }
+        else {
+            System.out.println("✘ Invalid PIN. Access denied.");
         }
 
-        System.out.println("Your balance is:" + this.accounts.get(accountNumber).getBalance());
+//        if (!verifyPin(accountNumber, pin)) {
+//            return;
+//        }
+
+        //System.out.println("Your balance is:" + this.accounts.get(accountNumber).getBalance());
 
     }
 
