@@ -183,7 +183,7 @@ public class UserService {
 
             switch (choice) {
                 case 1:
-                    bankService.createAccount();
+                    bankService.createAccount(username);
                     break;
                 case 2:
                     bankService.checkBalance(username);
