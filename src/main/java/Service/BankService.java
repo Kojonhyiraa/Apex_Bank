@@ -12,7 +12,10 @@ import static Utils.validateInput.*;
 
 public class BankService implements authenticatable {
     // Users should be able to create Savings or Current accounts
+    private final Map<String, List<Account> > listOfAccounts = new HashMap<>();
+
     private final Map<String, Account> accounts = new HashMap<>();
+
     Scanner input = new Scanner(System.in);
 
     // Generate Current Account Number
@@ -37,6 +40,10 @@ public class BankService implements authenticatable {
         return accounts;
     }
 
+    public Map<String, List<Account>> getListOfAccounts() {
+        return listOfAccounts;
+    }
+
     // Implementing an authenticatable interface
     @Override
     public boolean verifyPin(String accountNumber, String pin) {
@@ -57,7 +64,7 @@ public class BankService implements authenticatable {
     }
 
     // Method that lets users choose which type of account to create
-    public void createAccount() {
+    public void createAccount(String username) {
         Scanner input = new Scanner(System.in);
         System.out.println("===========================================================================");
         System.out.println("||              WELCOME to APEX BANK Account Creation Portal:             ||");
@@ -74,7 +81,7 @@ public class BankService implements authenticatable {
                 break;
 
             case 2:
-                createCurrentAccount();
+                createCurrentAccount(username);
                 break;
 
             default:
@@ -186,7 +193,7 @@ public class BankService implements authenticatable {
     }
 
     // Create Current Account
-    public void createCurrentAccount() {
+    public void createCurrentAccount(String username) {
         Scanner input = new Scanner(System.in);
 
         System.out.println("\n\n");
@@ -250,11 +257,8 @@ public class BankService implements authenticatable {
         CurrentAccount currentAccount = new CurrentAccount(name, accountNumber, phoneNumber, ghanaCardNumber, "Current", balance, new ArrayList<>(), pin);
 
         // Storing values
-        accounts.put(name, currentAccount);
+        listOfAccounts.computeIfAbsent(username, k -> new ArrayList<>()).add(currentAccount);
         accounts.put(accountNumber, currentAccount);
-        accounts.put(phoneNumber, currentAccount);
-        accounts.put(ghanaCardNumber, currentAccount);
-        accounts.put(pin, currentAccount);
 
 
         // --- BEAUTIFIED VERIFICATION CARD ---
@@ -279,11 +283,12 @@ public class BankService implements authenticatable {
 
     // Check User Balance
     public void checkBalance(String username) {
+
         Scanner input = new Scanner(System.in);
 
 //        System.out.println("Enter account number: ");
 //        String accountNumber = input.nextLine();
-        if (!accounts.containsKey(username)) {
+        if (!listOfAccounts.containsKey(username)) {
             System.out.println("✘ ERROR: No bank account found for user: " + username);
             System.out.println("Please create an account first (Option 1).");
             return;
@@ -292,7 +297,10 @@ public class BankService implements authenticatable {
         System.out.println("Enter your pin");
         String pin = input.nextLine();
 
-        Account account = accounts.get(username);
+        List<Account> userAccounts = listOfAccounts.get(username);
+
+        // Assuming we check the balance of the first account or you can implement logic to select one
+        Account account = userAccounts.get(0);
 
         if(account.getPin().equals(pin)){
             System.out.println("=================================================");
@@ -553,6 +561,7 @@ public class BankService implements authenticatable {
         System.out.println("  Press ENTER to return to the menu...");
         input.nextLine();
     }
+
 
 
 }
