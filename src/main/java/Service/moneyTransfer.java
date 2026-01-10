@@ -19,6 +19,7 @@ public class moneyTransfer implements authenticatable {
         this.input = new Scanner(System.in);
     }
 
+
     //Transfer money Section
     public void transferMoneyMenu() {
         Scanner input = new Scanner(System.in);
