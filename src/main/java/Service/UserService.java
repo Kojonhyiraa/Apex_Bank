@@ -68,8 +68,7 @@ public class UserService {
                 User newUser = new User(username, password, pin);
                 users.put(username, newUser);
 
-                //startmenu(username);
-                entryPoint();
+                startmenu(username);
                 break;
             }
             else {
@@ -81,17 +80,20 @@ public class UserService {
     }
 
     public void login(){
+        while (true){
         Scanner input = new Scanner(System.in);
-        System.out.println("Enter your username");
+        System.out.println("Enter your username:");
         String username = input.nextLine();
 
-        System.out.println("Enter your pin");
-        String pin = input.nextLine();
 
         if(!users.containsKey(username)){
+            System.out.println("=================================================");
             System.out.println("User not found");
-            return;
+            entryPoint(); //start from the main point
         }
+
+        System.out.println("Enter your pin:");
+        String pin = input.nextLine();
 
         //get the username
         User verifiedUser = users.get(username);
@@ -99,8 +101,13 @@ public class UserService {
         if(verifiedUser.getPin().equals(pin)){
             System.out.println("Authentication successful");
             startmenu(username);
+            break;
         }
-    }
+        else{
+            System.out.println("Incorrect Pin. Try again");
+        }
+
+    }}
 
     public void entryPoint(){
         Scanner input = new Scanner(System.in);
@@ -118,9 +125,9 @@ public class UserService {
         System.out.println("│                       WELCOME TO APEX BANK PORTAL                       │");
         System.out.println("└─────────────────────────────────────────────────────────────────────────┘");
 
-        System.out.println(" [1] Register as new user");
-        System.out.println(" [2] Login");
-        System.out.println(" [3] Exit");
+        System.out.println("[1] Register as new user");
+        System.out.println("[2] Login");
+        System.out.println("[3] Exit");
 
         int choice = input.nextInt();
 
@@ -195,7 +202,9 @@ public class UserService {
                     break;
                 case 7:
                     System.out.println("Thank you for choosing Apex Bank. Goodbye!");
+                    entryPoint();
                     return;
+
                 default:
                     System.out.println("Invalid choice. Please try again.");
             }
