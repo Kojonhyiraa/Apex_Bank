@@ -11,6 +11,7 @@ public class User {
         this.pin = pin;
     }
 
+
     public String getUsername() {
         return username;
     }
