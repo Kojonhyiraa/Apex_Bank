@@ -279,6 +279,7 @@ public class BankService implements authenticatable {
         input.nextLine();
     }
 
+
     // Check User Balance
     public void checkBalance(String username) {
 
