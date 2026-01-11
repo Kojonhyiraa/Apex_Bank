@@ -324,8 +324,6 @@ public class BankService implements authenticatable {
         }
     }
 
-    // Check User Transactions
-
     // Initial deposit for Saving Account
     public boolean initialDeposit(SavingsAccount savingsAccount) {
         Scanner input = new Scanner(System.in);
