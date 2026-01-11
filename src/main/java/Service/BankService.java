@@ -566,9 +566,7 @@ public class BankService implements authenticatable {
         input.nextLine();
     }
 
-    public void jj(){
 
-    }
 
 
 }
