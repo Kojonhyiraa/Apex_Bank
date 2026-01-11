@@ -10,10 +10,11 @@ import java.util.*;
 
 import static Utils.validateInput.*;
 
+
+
 public class BankService implements authenticatable {
     // Users should be able to create Savings or Current accounts
     private final Map<String, List<Account> > listOfAccounts = new HashMap<>();
-
     private final Map<String, Account> accounts = new HashMap<>();
 
     Scanner input = new Scanner(System.in);
@@ -567,5 +568,4 @@ public class BankService implements authenticatable {
     }
 
     //https://aoc.fornwall.net/
-
 }
