@@ -395,7 +395,7 @@ public class BankService implements authenticatable {
         return false;
     }
 
-    // Deposit fundsT
+    // Deposit funds
     public void deposit() {
         try {
             Scanner input = new Scanner(System.in);
