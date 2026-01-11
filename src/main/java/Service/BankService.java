@@ -568,7 +568,4 @@ public class BankService implements authenticatable {
 
     //https://aoc.fornwall.net/
 
-
-
-
 }
