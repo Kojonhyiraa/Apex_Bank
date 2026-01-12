@@ -197,7 +197,7 @@ public class UserService {
                     bankService.deposit(username);
                     break;
                 case 4:
-                    bankService.withdrawal();
+                    bankService.withdrawal(username);
                     break;
                 case 5:
                     moneyTransfer.transferMoneyMenu();
