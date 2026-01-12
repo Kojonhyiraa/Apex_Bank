@@ -136,7 +136,6 @@ public class BankService implements authenticatable {
             System.out.println(" ✘ ERROR: Invalid Ghana Card Number.");
         }
 
-
         //Validate Pin
         String pin;
         while (true) {
@@ -154,20 +153,6 @@ public class BankService implements authenticatable {
 
         SavingsAccount savingsAccount = new SavingsAccount(name, accountNumber, phoneNumber, ghanaCardNumber, "Savings", balance, new ArrayList<>(), pin);
 
-        // --- BEAUTIFIED VERIFICATION CARD ---
-        System.out.println("\n  ✔ APPLICATION PROCESSED SUCCESSFULLY");
-        System.out.println("  ┌──────────────────────────────────────────────────────────┐");
-        System.out.println("  │                OFFICIAL ACCOUNT SUMMARY                  │");
-        System.out.println("  ├──────────────────────────────────────────────────────────┤");
-        System.out.printf("   │  HOLDER NAME    : %-38s │\n", name.toUpperCase());
-        System.out.printf("   │  ACCOUNT NUMBER : %-38s │\n", accountNumber);
-        System.out.printf("   │  PHONE NUMBER   : %-38s │\n", phoneNumber);
-        System.out.printf("   │  GHANA CARD ID  : %-38s │\n", formatCard(ghanaCardNumber));
-        System.out.printf("   │  ACCOUNT TYPE   : %-38s │\n", "SAVINGS");
-        System.out.printf("   │  INITIAL BAL    : GHS %-34.2f │\n", balance);
-        System.out.println("  ├───── ACCOUNT WILL ONLY BE SAVED AFTER INITIAL DEPOSIT────┤");
-        System.out.println("  └──────────────────────────────────────────────────────────┘");
-
         System.out.println("\n  Processing...");
         // Simple visual loading bar
         System.out.println("  [██████████████████████████████] 100%");
@@ -178,14 +163,25 @@ public class BankService implements authenticatable {
         boolean depositSuccessful = initialDeposit(savingsAccount);
 
         if (depositSuccessful) {
-            // Only store account after successful initial deposit
+            // Only display account info after a successful initial deposit
             listOfAccounts.computeIfAbsent(username, k -> new ArrayList<>()).add(savingsAccount);
             accounts.put(accountNumber, savingsAccount);
 
+            // --- BEAUTIFIED VERIFICATION CARD ---
+            System.out.println("\n  ✔ APPLICATION PROCESSED SUCCESSFULLY");
+            System.out.println("  ┌──────────────────────────────────────────────────────────┐");
+            System.out.println("  │                OFFICIAL ACCOUNT SUMMARY                  │");
+            System.out.println("  ├──────────────────────────────────────────────────────────┤");
+            System.out.printf("   │  HOLDER NAME    : %-38s │\n", name.toUpperCase());
+            System.out.printf("   │  ACCOUNT NUMBER : %-38s │\n", accountNumber);
+            System.out.printf("   │  PHONE NUMBER   : %-38s │\n", phoneNumber);
+            System.out.printf("   │  GHANA CARD ID  : %-38s │\n", formatCard(ghanaCardNumber));
+            System.out.printf("   │  ACCOUNT TYPE   : %-38s │\n", "SAVINGS");
+            System.out.printf("   │  INITIAL BAL    : GHS %-34.2f │\n", savingsAccount.getBalance());
+            System.out.println("  ├───── ACCOUNT HAS BEEN ACTIVATED AFTER INITIAL DEPOSIT────┤");
+            System.out.println("  └──────────────────────────────────────────────────────────┘");
 
             System.out.println("\n✔ Savings account successfully created and activated!");
-            System.out.println("  Account Number: " + accountNumber);
-            System.out.println("  Initial Balance: GHS " + savingsAccount.getBalance());
         } else {
             System.out.println("\n✘ Account creation cancelled. Initial deposit requirement not met.");
         }
@@ -265,12 +261,12 @@ public class BankService implements authenticatable {
         System.out.println("  ┌──────────────────────────────────────────────────────────┐");
         System.out.println("  │                OFFICIAL ACCOUNT SUMMARY                  │");
         System.out.println("  ├──────────────────────────────────────────────────────────┤");
-        System.out.printf("  │  HOLDER NAME    : %-38s │\n", name.toUpperCase());
-        System.out.printf("  │  ACCOUNT NUMBER : %-38s │\n", accountNumber);
-        System.out.printf("  │  PHONE NUMBER   : %-38s │\n", phoneNumber);
-        System.out.printf("  │  GHANA CARD ID  : %-38s │\n", formatCard(ghanaCardNumber));
-        System.out.printf("  │  ACCOUNT TYPE   : %-38s │\n", "CURRENT");
-        System.out.printf("  │  INITIAL BAL    : GHS %-34.2f │\n", balance);
+        System.out.printf("   │  HOLDER NAME    : %-38s │\n", name.toUpperCase());
+        System.out.printf("   │  ACCOUNT NUMBER : %-38s │\n", accountNumber);
+        System.out.printf("   │  PHONE NUMBER   : %-38s │\n", phoneNumber);
+        System.out.printf("   │  GHANA CARD ID  : %-38s │\n", formatCard(ghanaCardNumber));
+        System.out.printf("   │  ACCOUNT TYPE   : %-38s │\n", "CURRENT");
+        System.out.printf("   │  INITIAL BAL    : GHS %-34.2f │\n", balance);
         System.out.println("  └──────────────────────────────────────────────────────────┘");
 
         System.out.println("\n  Processing...");
