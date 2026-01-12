@@ -190,7 +190,7 @@ public class BankService implements authenticatable {
     // Create Current Account
     public void createCurrentAccount(String username) {
         Scanner input = new Scanner(System.in);
-
+        try{
         System.out.println("\n\n");
         System.out.println("  ╔═══════════════════════════════════════════════════════════╗");
         System.out.println("  ║            NEW CURRENT ACCOUNT APPLICATION                ║");
@@ -273,7 +273,11 @@ public class BankService implements authenticatable {
         // Simple visual loading bar
         System.out.println("  [██████████████████████████████] 100%");
         System.out.println("  Press ENTER to return to the menu...");
-        input.nextLine();
+        input.nextLine();}
+
+        catch (Exception e) {
+            System.out.println("Invalid Input");
+        }
     }
 
     // Check User Balance
@@ -295,7 +299,7 @@ public class BankService implements authenticatable {
                 System.out.printf("[%d] %s (%s)\n", i + 1, acc.getAccountType(), acc.getAccountNumber());
             }
 
-            System.out.print("Select account index to check balance: ");
+            System.out.print("Select account to check balance: ");
             int index = input.nextInt() - 1;
             input.nextLine();
 
@@ -325,7 +329,7 @@ public class BankService implements authenticatable {
     // Deposit funds
     public void deposit(String username) {
         Scanner input = new Scanner(System.in);
-
+         try{
         //Check if a user bank account or accounts exists
         if (!listOfAccounts.containsKey(username)) {
             System.out.println("✘ ERROR: No bank account found for user: " + username);
@@ -343,7 +347,7 @@ public class BankService implements authenticatable {
         }
 
         //User selects their account number to credit
-        System.out.print("Select account index to deposit: ");
+        System.out.print("Select account to deposit: ");
         int index = input.nextInt() - 1;
         input.nextLine();
 
@@ -378,12 +382,15 @@ public class BankService implements authenticatable {
             account.addTransaction(transaction);
         } else {
             System.out.println("Invalid amount.Try again");
-        }
-
+        }}
+         catch (Exception e) {
+             System.out.println("Invalid Input");
+         }
     }
 
     // Initial deposit for Saving Account
     public boolean initialDeposit(SavingsAccount savingsAccount) {
+
         Scanner input = new Scanner(System.in);
         int attempts = 0;
         int maxAttempts = 3;
@@ -454,21 +461,39 @@ public class BankService implements authenticatable {
     }
 
     // Withdraw funds per-account specifications
-    public void withdrawal() {
-
+    public void withdrawal(String username) {
+       try{
+        Scanner input = new Scanner(System.in);
             /*
             * SavingsAccount: Must enforce a Minimum Balance of $50. Any debit that violates this must be blocked.
                CurrentAccount: Must implement an Overdraft Limit (e.g., balance can go down to -$500).*/
-        System.out.println("Enter account number: ");
-        String accountNumb = input.nextLine();
 
-        System.out.println("Enter your pin");
-        String pin = input.nextLine();
-
-        if (!verifyPin(accountNumb, pin)) {
+        //Check if a user bank account or accounts exists
+        if (!listOfAccounts.containsKey(username)) {
+            System.out.println("✘ ERROR: No bank account found for user: " + username);
+            System.out.println("Please create an account first (Option 1).");
             return;
         }
-        Account account = accounts.get(accountNumb);
+
+        //Display all bank account/accounts associated with the user
+        List<Account> userAccounts = listOfAccounts.get(username);
+        System.out.println("\n--- Your Accounts ---");
+        for (int i = 0; i < userAccounts.size(); i++) {
+            Account acc = userAccounts.get(i);
+            System.out.printf("[%d] %s (%s)\n", i + 1, acc.getAccountType(), acc.getAccountNumber());
+        }
+
+        //User selects their account number to credit
+        System.out.print("Select account to deposit: ");
+        int index = input.nextInt() - 1;
+        input.nextLine();
+
+        if (index < 0 || index >= userAccounts.size()) {
+            System.out.println("Invalid selection.");
+            return;
+        }
+
+        Account account = userAccounts.get(index);
 
         System.out.println("Enter amount to withdraw:");
         double amount = input.nextDouble();
@@ -485,7 +510,7 @@ public class BankService implements authenticatable {
 
         // Check if it's a savings or current account
         if (account instanceof SavingsAccount) {
-            // SavingsAccount: Enforce minimum balance of $50
+            // SavingsAccount: Enforce a minimum balance of $50
             if (amount > currentBalance) {
                 System.out.println("✘ ERROR: Insufficient funds.");
                 System.out.println("Current balance: GHS " + currentBalance);
@@ -509,7 +534,13 @@ public class BankService implements authenticatable {
                 return;
             }
         }
+        System.out.println("Enter your pin: ");
+        String pin = input.nextLine();
 
+        if(!account.getPin().equals(pin)){
+            System.out.println("Invalid pin, try again");
+            return;
+        }
         // Proceed with withdrawal and logging
         account.setBalance(balanceAfterWithdrawal);
 
@@ -520,7 +551,10 @@ public class BankService implements authenticatable {
         System.out.println("  [██████████████████████████████] 100%");
         System.out.println("✔ Withdrawal successful!");
         System.out.println("  Amount withdrawn: GHS " + amount);
-        System.out.println("  New balance: GHS " + balanceAfterWithdrawal);
+        System.out.println("  New balance: GHS " + balanceAfterWithdrawal);}
+       catch(Exception e){
+           System.out.println("Invalid input");
+       }
     }
 
     // Ghana Card input Format
@@ -583,4 +617,5 @@ public class BankService implements authenticatable {
         System.out.println("  Press ENTER to return to the menu...");
         input.nextLine();
     }
+
 }
