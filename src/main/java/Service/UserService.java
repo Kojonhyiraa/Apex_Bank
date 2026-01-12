@@ -189,7 +189,7 @@ public class UserService {
                     bankService.checkBalance(username);
                     break;
                 case 3:
-                    bankService.deposit();
+                    bankService.deposit(username);
                     break;
                 case 4:
                     bankService.withdrawal();
