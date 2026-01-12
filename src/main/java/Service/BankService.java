@@ -278,24 +278,72 @@ public class BankService implements authenticatable {
 
     // Check User Balance
     public void checkBalance(String username) {
+        try {
+            Scanner input = new Scanner(System.in);
 
+            if (!listOfAccounts.containsKey(username)) {
+                System.out.println("✘ ERROR: No bank account found for user: " + username);
+                System.out.println("Please create an account first (Option 1).");
+                return;
+            }
+
+            List<Account> userAccounts = listOfAccounts.get(username);
+
+            System.out.println("\n--- Your Accounts ---");
+            for (int i = 0; i < userAccounts.size(); i++) {
+                Account acc = userAccounts.get(i);
+                System.out.printf("[%d] %s (%s)\n", i + 1, acc.getAccountType(), acc.getAccountNumber());
+            }
+
+            System.out.print("Select account index to check balance: ");
+            int index = input.nextInt() - 1;
+            input.nextLine();
+
+            if (index < 0 || index >= userAccounts.size()) {
+                System.out.println("Invalid selection.");
+                return;
+            }
+            Account account = userAccounts.get(index);
+
+
+            //Pin Section
+            System.out.println("Enter your pin");
+            String pin = input.nextLine();
+
+            if (account.getPin().equals(pin)) {
+                System.out.println("=================================================");
+                System.out.printf(" Current Balance: GHS %.2f\n", account.getBalance());
+                System.out.println("============================");
+            } else {
+                System.out.println("✘ Invalid PIN. Access denied.");
+            }
+        } catch(InputMismatchException e){
+            System.out.println("Wrong input format. Please enter a number");
+        }
+    }
+
+    // Deposit funds
+    public void deposit(String username) {
         Scanner input = new Scanner(System.in);
 
+        //Check if a user bank account or accounts exists
         if (!listOfAccounts.containsKey(username)) {
             System.out.println("✘ ERROR: No bank account found for user: " + username);
             System.out.println("Please create an account first (Option 1).");
             return;
         }
 
-        List<Account> userAccounts = listOfAccounts.get(username);
 
+        //Display all bank account/accounts associated with the user
+        List<Account> userAccounts = listOfAccounts.get(username);
         System.out.println("\n--- Your Accounts ---");
         for (int i = 0; i < userAccounts.size(); i++) {
             Account acc = userAccounts.get(i);
             System.out.printf("[%d] %s (%s)\n", i + 1, acc.getAccountType(), acc.getAccountNumber());
         }
 
-        System.out.print("Select account index to check balance: ");
+        //User selects their account number to credit
+        System.out.print("Select account index to deposit: ");
         int index = input.nextInt() - 1;
         input.nextLine();
 
@@ -303,22 +351,35 @@ public class BankService implements authenticatable {
             System.out.println("Invalid selection.");
             return;
         }
+
         Account account = userAccounts.get(index);
 
+        System.out.println("Enter amount to deposit:");
+        double amount = input.nextDouble();
+        input.nextLine();
 
-        //Pin Section
-        System.out.println("Enter your pin");
-        String pin = input.nextLine();
+        //Now deposit money into the account
+        if (amount > 0) {
 
-        if(account.getPin().equals(pin)){
-            System.out.println("=================================================");
-            System.out.printf(" Current Balance: GHS %.2f\n", account.getBalance());
-            System.out.println("============================");
+            account.setBalance(account.getBalance() + amount);
+
+            double newBalance = account.getBalance();
+            System.out.println("Deposit successful");
+            System.out.println("======================================================================");
+            System.out.println("Your new balance is:" + newBalance);
+            System.out.println("======================================================================");
+
+            //Log the transaction
+            Transaction transaction = new Transaction(amount,
+                                                    java.time.LocalDateTime.now(),
+                                                    Transaction.TransactionType.DEPOSIT,
+                                                    newBalance);
+
+            account.addTransaction(transaction);
+        } else {
+            System.out.println("Invalid amount.Try again");
         }
 
-        else {
-            System.out.println("✘ Invalid PIN. Access denied.");
-        }
     }
 
     // Initial deposit for Saving Account
@@ -390,46 +451,6 @@ public class BankService implements authenticatable {
         }
 
         return false;
-    }
-
-    // Deposit funds
-    public void deposit() {
-        try {
-            Scanner input = new Scanner(System.in);
-
-            System.out.println("Enter account number: ");
-            String accountNumber = input.nextLine();
-
-            //Check if the account number exists even before the user can enter any amount
-            if (!accounts.containsKey(accountNumber)) {
-                throw new AccountNotFoundException(accountNumber + " Not found in our records");
-            }
-
-            System.out.println("Enter amount to deposit:");
-            double amount = input.nextDouble();
-            input.nextLine();
-
-            if (amount > 0) {
-                Account account = accounts.get(accountNumber);
-                account.setBalance(account.getBalance() + amount);
-
-                double newBalance = account.getBalance();
-                System.out.println("Deposit successful");
-                System.out.println("======================================================================");
-                System.out.println("Your new balance is:" + newBalance);
-                System.out.println("======================================================================");
-
-                //Log the transaction
-                Transaction transaction = new Transaction(amount, java.time.LocalDateTime.now(), Transaction.TransactionType.DEPOSIT, newBalance);
-
-                account.addTransaction(transaction);
-            } else {
-                System.out.println("Invalid amount.Try again");
-            }
-
-        } catch (AccountNotFoundException e) {
-            System.out.println(e.getMessage());
-        }
     }
 
     // Withdraw funds per-account specifications
