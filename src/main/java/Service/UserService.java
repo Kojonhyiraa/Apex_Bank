@@ -12,6 +12,11 @@ public class UserService {
 
     private final Map<String, User> users = new HashMap<>();
 
+    public UserService() {
+        // Adding default credentials
+        users.put("admin", new User("admin", "Admin@123", "1234"));
+    }
+
     //Initial User Registration
     public void register() {
         Scanner input = new Scanner(System.in);
