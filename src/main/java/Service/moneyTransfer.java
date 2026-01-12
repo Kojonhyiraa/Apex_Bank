@@ -210,7 +210,6 @@ public class moneyTransfer implements authenticatable {
         System.out.println("Feature will be implemented soon");
     }
 
-
     @Override
     public boolean verifyPin(String accountNumber, String pin) {
         if (!accounts.containsKey(accountNumber)) {
