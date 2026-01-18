@@ -32,5 +32,4 @@ public class validateInput {
                 && password.matches(".*\\d.*")             // At least one digit
                 && password.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?].*"); // At least one symbol
     }
-
 }
